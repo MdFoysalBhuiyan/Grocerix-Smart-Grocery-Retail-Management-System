@@ -296,29 +296,13 @@ This project demonstrates practical knowledge of:
 * Business workflow design
 * Modular software development
 
----
+## 👥 Group Members
 
----
+1. **Ahbab Sakalain**
+2. **Saiful Islam**
+3. **Foysal Bhuiyan**
 
-## 🤝 Contributing
 
-Contributions, suggestions, and improvements are welcome.
 
-If you'd like to contribute:
-
-1. Fork the repository
-2. Create a new feature branch
-3. Make your changes
-4. Test the application
-5. Commit your changes
-6. Open a Pull Request
-
-Please keep contributions clean, documented, and consistent with the existing project structure.
-
----
-
-## 👨‍💻 Developer
-
-Developed with **Java ☕ + Swing 🖥️ + creativity ❤️**
 
 If you find this project useful or interesting, consider giving the repository a ⭐.
