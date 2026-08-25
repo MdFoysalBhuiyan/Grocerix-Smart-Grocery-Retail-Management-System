@@ -8,7 +8,7 @@ Built with **Java Swing**, the system provides an intuitive graphical interface 
 
 Whether you're managing a small neighborhood grocery store or building a foundation for a larger retail management platform, this project demonstrates how a traditional desktop application can deliver a clean, efficient, and user-friendly experience.
 
-![Login Screen](Screenshot 2026-08-25 121126.png)
+![image_alt]([Screenshot 2026-08-25 121126.png](https://github.com/MdFoysalBhuiyan/Grocery-shop-management-system/blob/11eeb5430c6ef5b40e2cf7466d052403dd719a84/Screenshot%202026-08-25%20121126.png))
 
 ### 📦 Inventory Management
 
