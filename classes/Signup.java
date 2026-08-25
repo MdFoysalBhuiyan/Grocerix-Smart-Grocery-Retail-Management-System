@@ -20,193 +20,161 @@ public class Signup implements ActionListener {
     private JLabel password;
     private JLabel confpassword;
     private JLabel email;
-    private JTextField userField;
-    private JTextField emailField;
-    private JPasswordField passField;
-    private JPasswordField confpassField;
+    private UIStyle.ModernTextField userField;
+    private UIStyle.ModernTextField emailField;
+    private UIStyle.ModernPasswordField passField;
+    private UIStyle.ModernPasswordField confpassField;
     private JLabel fullName;
-    private JTextField fullField;
+    private UIStyle.ModernTextField fullField;
 
     private ImageIcon on;
     private ImageIcon off;
     private JToggleButton toggleButton;
     private JToggleButton toggleButton2;
     private JButton exitButton;
-    private JButton signup_logo;
+    private UIStyle.ModernButton signup_logo;
     private JButton loginimg;
 
     private Cursor cursor;
 
     public Signup() {
-
         frame = new JFrame();
         frame.setBounds(50, 50, 850, 550);
-        frame.setTitle("Sign Up");
+        frame.setTitle("Grocery Shop Management - Sign Up");
         frame.setLayout(null);
         frame.setVisible(true);
         c = frame.getContentPane();
-        c.setBackground(Color.decode("#24292e"));
+        c.setBackground(UIStyle.BG_DARK);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         ImageIcon icon = new ImageIcon("images/market.jpg");
         frame.setIconImage(icon.getImage());
-        frame.setLocationRelativeTo(null);
 
         cursor = new Cursor(Cursor.HAND_CURSOR);
 
-        JLabel lo = new JLabel("SIGN UP");
-        lo.setBounds(383, 0, 200, 30);
-        Font loFont = new Font("Verdana", Font.BOLD, 22);
-        lo.setFont(loFont);
-        lo.setForeground(new Color(215, 210, 203));
-        frame.add(lo);
+        // --- CENTERED SIGNUP CARD ---
+        UIStyle.RoundedPanel signupCard = new UIStyle.RoundedPanel(16, UIStyle.PANEL_BG, UIStyle.PANEL_BORDER);
+        signupCard.setBounds(165, 20, 520, 470);
+        signupCard.setLayout(null);
+        frame.add(signupCard);
 
-        fullName = new JLabel("Full Name :");
-        fullName.setBounds(315, 60, 150, 50);
-        Font fullNameFont = new Font("Verdana", Font.PLAIN, 17);
-        fullName.setFont(fullNameFont);
-        fullName.setForeground(Color.white);
-        frame.add(fullName);
+        JLabel headerTitle = new JLabel("Create Account", SwingConstants.CENTER);
+        headerTitle.setBounds(40, 18, 440, 30);
+        headerTitle.setFont(UIStyle.FONT_TITLE);
+        headerTitle.setForeground(UIStyle.TEXT_PRIMARY);
+        signupCard.add(headerTitle);
 
-        fullField = new JTextField();
-        fullField.setBounds(315, 100, 248, 30);
-        Font fullFieldFont = new Font("Times New Roman", Font.PLAIN, 17);
-        fullField.setFont(fullFieldFont);
-        fullField.setOpaque(false);
-        fullField.setForeground(new Color(219, 226, 233));
-        fullField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(179, 63, 64));
-        fullField.setBorder(redBorder);
-        frame.add(fullField);
+        JLabel subTitle = new JLabel("Fill in your personal details to get started", SwingConstants.CENTER);
+        subTitle.setBounds(40, 48, 440, 20);
+        subTitle.setFont(UIStyle.FONT_SMALL);
+        subTitle.setForeground(UIStyle.TEXT_MUTED);
+        signupCard.add(subTitle);
 
-        username = new JLabel("User Name :");
-        username.setBounds(315, 130, 150, 50);
-        Font usernameFont = new Font("Verdana", Font.PLAIN, 17);
-        username.setFont(usernameFont);
-        username.setForeground(Color.white);
-        frame.add(username);
+        // Full Name
+        fullName = new JLabel("Full Name");
+        fullName.setBounds(40, 75, 200, 18);
+        fullName.setFont(UIStyle.FONT_BODY_BOLD);
+        fullName.setForeground(UIStyle.TEXT_PRIMARY);
+        signupCard.add(fullName);
 
-        userField = new JTextField();
-        userField.setBounds(315, 170, 248, 30);
-        Font userfieldFont = new Font("Times New Roman", Font.PLAIN, 17);
-        userField.setFont(userfieldFont);
-        userField.setOpaque(false);
-        userField.setForeground(new Color(219, 226, 233));
-        userField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder1 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(179, 63, 64));
-        userField.setBorder(redBorder1);
-        frame.add(userField);
+        fullField = new UIStyle.ModernTextField("John Doe");
+        fullField.setBounds(40, 95, 440, 34);
+        signupCard.add(fullField);
 
-        email = new JLabel("Phone Number :");
-        email.setBounds(315, 200, 150, 50);
-        Font emailFont = new Font("Verdana", Font.PLAIN, 17);
-        email.setFont(emailFont);
-        email.setForeground(Color.white);
-        frame.add(email);
+        // Username & Phone in 2 columns
+        username = new JLabel("Username");
+        username.setBounds(40, 135, 200, 18);
+        username.setFont(UIStyle.FONT_BODY_BOLD);
+        username.setForeground(UIStyle.TEXT_PRIMARY);
+        signupCard.add(username);
 
-        emailField = new JTextField();
-        emailField.setBounds(315, 240, 248, 30);
-        Font emailFieldFont = new Font("Times New Roman", Font.PLAIN, 17);
-        emailField.setFont(emailFieldFont);
-        emailField.setOpaque(false);
-        emailField.setForeground(new Color(219, 226, 233));
-        emailField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder2 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(179, 63, 64));
-        emailField.setBorder(redBorder2);
-        frame.add(emailField);
+        userField = new UIStyle.ModernTextField("username");
+        userField.setBounds(40, 155, 210, 34);
+        signupCard.add(userField);
 
-        password = new JLabel("Password :");
-        password.setBounds(315, 270, 150, 50);
-        Font passwordFont = new Font("Verdana", Font.PLAIN, 17);
-        password.setFont(passwordFont);
-        password.setForeground(Color.white);
-        frame.add(password);
+        email = new JLabel("Phone Number (11 digits)");
+        email.setBounds(270, 135, 210, 18);
+        email.setFont(UIStyle.FONT_BODY_BOLD);
+        email.setForeground(UIStyle.TEXT_PRIMARY);
+        signupCard.add(email);
 
-        passField = new JPasswordField();
-        passField.setBounds(315, 310, 212, 30);
-        Font passfieldFont = new Font("Verdana", Font.PLAIN, 18);
-        passField.setFont(passfieldFont);
-        passField.setEchoChar('*');
-        passField.setOpaque(false);
-        passField.setForeground(new Color(219, 226, 233));
-        passField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder3 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(179, 63, 64));
-        passField.setBorder(redBorder3);
-        frame.add(passField);
+        emailField = new UIStyle.ModernTextField("01712345678");
+        emailField.setBounds(270, 155, 210, 34);
+        signupCard.add(emailField);
 
-        confpassword = new JLabel("Confirm Password :");
-        confpassword.setBounds(315, 340, 200, 50);
-        Font cconfpasswordFont = new Font("Verdana", Font.PLAIN, 17);
-        confpassword.setFont(cconfpasswordFont);
-        confpassword.setForeground(Color.white);
-        frame.add(confpassword);
+        // Password & Confirm Password in 2 columns
+        password = new JLabel("Password");
+        password.setBounds(40, 195, 200, 18);
+        password.setFont(UIStyle.FONT_BODY_BOLD);
+        password.setForeground(UIStyle.TEXT_PRIMARY);
+        signupCard.add(password);
 
-        confpassField = new JPasswordField();
-        confpassField.setBounds(315, 380, 212, 30);
-        Font confpassFieldFont = new Font("Verdana", Font.PLAIN, 18);
-        confpassField.setFont(confpassFieldFont);
-        confpassField.setEchoChar('*');
-        confpassField.setOpaque(false);
-        confpassField.setForeground(new Color(219, 226, 233));
-        confpassField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder4 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(179, 63, 64));
-        confpassField.setBorder(redBorder4);
-        frame.add(confpassField);
-
-        ImageIcon singupImage = new ImageIcon("images/Signup.png");
-        signup_logo = new JButton(singupImage);
-        signup_logo.setBounds(392, 420, singupImage.getIconWidth(), singupImage.getIconHeight());
-        signup_logo.setBackground(Color.black);
-        signup_logo.setToolTipText("");
-        signup_logo.setOpaque(false);
-        signup_logo.setBorder(BorderFactory.createEmptyBorder());
-        signup_logo.setCursor(cursor);
-        frame.add(signup_logo);
+        passField = new UIStyle.ModernPasswordField("Password");
+        passField.setBounds(40, 215, 170, 34);
+        signupCard.add(passField);
 
         on = new ImageIcon("images/tg1.png");
         off = new ImageIcon("images/tg2.png");
         toggleButton = new JToggleButton(off);
-        toggleButton.setBounds(525, 300, 40, 40);
-        toggleButton.setBackground(new Color(0, 0, 0, 0));
-        toggleButton.setForeground(new Color(0, 0, 0, 0));
+        toggleButton.setBounds(215, 215, 34, 34);
+        toggleButton.setBackground(UIStyle.INPUT_BG);
         toggleButton.setOpaque(false);
-        toggleButton.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder5 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(179, 63, 64));
-        toggleButton.setBorder(redBorder5);
-        frame.add(toggleButton);
+        toggleButton.setFocusPainted(false);
+        toggleButton.setBorder(BorderFactory.createLineBorder(UIStyle.INPUT_BORDER, 1));
+        toggleButton.setCursor(cursor);
+        signupCard.add(toggleButton);
+
+        confpassword = new JLabel("Confirm Password");
+        confpassword.setBounds(270, 195, 200, 18);
+        confpassword.setFont(UIStyle.FONT_BODY_BOLD);
+        confpassword.setForeground(UIStyle.TEXT_PRIMARY);
+        signupCard.add(confpassword);
+
+        confpassField = new UIStyle.ModernPasswordField("Confirm Password");
+        confpassField.setBounds(270, 215, 170, 34);
+        signupCard.add(confpassField);
 
         toggleButton2 = new JToggleButton(off);
-        toggleButton2.setBounds(525, 370, 40, 40);
-        toggleButton2.setBackground(new Color(0, 0, 0, 0));
-        toggleButton2.setForeground(new Color(0, 0, 0, 0));
+        toggleButton2.setBounds(445, 215, 34, 34);
+        toggleButton2.setBackground(UIStyle.INPUT_BG);
         toggleButton2.setOpaque(false);
-        toggleButton2.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder6 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(179, 63, 64));
-        toggleButton2.setBorder(redBorder6);
-        frame.add(toggleButton2);
+        toggleButton2.setFocusPainted(false);
+        toggleButton2.setBorder(BorderFactory.createLineBorder(UIStyle.INPUT_BORDER, 1));
+        toggleButton2.setCursor(cursor);
+        signupCard.add(toggleButton2);
 
-        JLabel login = new JLabel("Already have an account?");
-        login.setBounds(322, 471, 200, 50);
-        Font loginFont = new Font("Verdana", Font.PLAIN, 13);
-        login.setFont(loginFont);
-        login.setForeground(Color.white);
-        frame.add(login);
+        // Sign Up Action Button
+        signup_logo = new UIStyle.ModernButton("Register Account", UIStyle.COLOR_PRIMARY, UIStyle.COLOR_PRIMARY_HOVER);
+        signup_logo.setBounds(40, 270, 440, 42);
+        signupCard.add(signup_logo);
 
-        ImageIcon loginb = new ImageIcon("images/Login_Button_Small.png");
-        loginimg = new JButton(loginb);
-        loginimg.setBounds(500, 484, loginb.getIconWidth(), loginb.getIconHeight());
-        loginimg.setBackground(new Color(0, 0, 0, 0));
-        loginimg.setOpaque(false);
+        // Already have an account row
+        JLabel loginLabel = new JLabel("Already have an account?", SwingConstants.RIGHT);
+        loginLabel.setBounds(100, 330, 180, 25);
+        loginLabel.setFont(UIStyle.FONT_BODY);
+        loginLabel.setForeground(UIStyle.TEXT_SECONDARY);
+        signupCard.add(loginLabel);
+
+        loginimg = new JButton("Sign In Here");
+        loginimg.setBounds(290, 330, 120, 25);
+        loginimg.setFont(UIStyle.FONT_BODY_BOLD);
         loginimg.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(loginimg);
+        loginimg.setOpaque(false);
+        loginimg.setForeground(UIStyle.COLOR_PRIMARY);
+        loginimg.setBackground(new Color(0, 0, 0, 0));
+        loginimg.setCursor(cursor);
+        signupCard.add(loginimg);
 
-        ImageIcon exit = new ImageIcon("images/Exit.png");
-        exitButton = new JButton(exit);
-        exitButton.setBounds(802, 478, exit.getIconWidth(), exit.getIconHeight());
-        exitButton.setBackground(Color.black);
+        // Exit Button (Top Right corner)
+        exitButton = new JButton("✕");
+        exitButton.setBounds(795, 10, 30, 30);
+        exitButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        exitButton.setForeground(UIStyle.TEXT_MUTED);
         exitButton.setOpaque(false);
+        exitButton.setContentAreaFilled(false);
         exitButton.setBorder(BorderFactory.createEmptyBorder());
+        exitButton.setCursor(cursor);
         frame.add(exitButton);
 
         exitButton.addActionListener(this);
@@ -218,8 +186,8 @@ public class Signup implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String user = userField.getText();
-        String pass = passField.getText();
-        String confpass = confpassField.getText();
+        String pass = new String(passField.getPassword());
+        String confpass = new String(confpassField.getPassword());
         String name = fullField.getText();
         String em = emailField.getText();
         boolean userEmpty = user.isEmpty();
@@ -232,8 +200,7 @@ public class Signup implements ActionListener {
         int numcount = 0;
 
         try {
-
-            number = Integer.parseInt(em);
+            number = Long.parseLong(em);
             if (em.length() != 11)
                 numcount++;
         } catch (Exception ex) {
@@ -241,17 +208,13 @@ public class Signup implements ActionListener {
         }
 
         if (e.getSource() == signup_logo) {
-
-            if (userEmpty == true || passEmpty == true || confEmpty == true || nameEmpty == true
-                    || emailEmpty == true) {
-                showMessageDialog(null, "Please fill all of the fields.", "Error!", JOptionPane.WARNING_MESSAGE);
+            if (userEmpty || passEmpty || confEmpty || nameEmpty || emailEmpty) {
+                showMessageDialog(null, "Please fill in all of the fields.", "Error", JOptionPane.WARNING_MESSAGE);
             } else if (numcount > 0) {
-                showMessageDialog(null, "Invalid Phone Number", " Error!", JOptionPane.WARNING_MESSAGE);
-            } else if (check == false) {
-                showMessageDialog(null, "Password is not matching", " Error!", JOptionPane.WARNING_MESSAGE);
-            }
-
-            else {
+                showMessageDialog(null, "Invalid Phone Number (Must be 11 digits)", "Error", JOptionPane.WARNING_MESSAGE);
+            } else if (!check) {
+                showMessageDialog(null, "Passwords do not match!", "Error", JOptionPane.WARNING_MESSAGE);
+            } else {
                 try {
                     File file = new File(".\\files\\user_login.txt");
                     if (!file.exists()) {
@@ -263,10 +226,8 @@ public class Signup implements ActionListener {
 
                     LocalDateTime myDateObj = LocalDateTime.now();
                     DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm a, dd/MM/yyyy");
-
                     String timeAndDate = myDateObj.format(myFormatObj);
 
-                    // User Login file checked
                     int totalLines = 0;
                     BufferedReader readFile = new BufferedReader(new FileReader(".\\files\\user_login.txt"));
                     while (readFile.readLine() != null) {
@@ -274,7 +235,6 @@ public class Signup implements ActionListener {
                     }
                     readFile.close();
 
-                    // Admin login file checked
                     BufferedReader adminFile = new BufferedReader(new FileReader(".\\files\\admin_login.txt"));
                     int totalLines2 = 0;
                     while (adminFile.readLine() != null) {
@@ -285,7 +245,6 @@ public class Signup implements ActionListener {
                     boolean userflag = false;
                     boolean adminflag = false;
 
-                    // for user
                     for (int i = 0; i < totalLines; i++) {
                         String line = Files.readAllLines(Paths.get(".\\files\\user_login.txt")).get(i);
                         if (line.equals("User Name : " + user)) {
@@ -294,7 +253,6 @@ public class Signup implements ActionListener {
                         }
                     }
 
-                    // for admin
                     for (int i = 0; i < totalLines2; i++) {
                         String line = Files.readAllLines(Paths.get(".\\files\\admin_login.txt")).get(i);
                         if (line.equals("User Name : " + user)) {
@@ -302,7 +260,8 @@ public class Signup implements ActionListener {
                             break;
                         }
                     }
-                    if (userflag == false && adminflag == false) {
+
+                    if (!userflag && !adminflag) {
                         printWriter.println("===============================================");
                         printWriter.println("Full Name : " + name);
                         printWriter.println("User Name : " + user);
@@ -310,21 +269,18 @@ public class Signup implements ActionListener {
                         printWriter.println("Phone : " + em);
                         printWriter.println("Time & Date : " + timeAndDate);
                         printWriter.println("===============================================");
+                        showMessageDialog(null, "Account created successfully! Please sign in.", "Success", JOptionPane.INFORMATION_MESSAGE);
                         frame.setVisible(false);
                         new Login();
-
                     } else {
-                        showMessageDialog(null, "User name already taken", "Warning", JOptionPane.WARNING_MESSAGE);
+                        showMessageDialog(null, "Username already taken!", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
 
                     printWriter.close();
-
                 } catch (Exception ex) {
                     System.out.print(ex);
                 }
-
             }
-
         }
 
         else if (e.getSource() == toggleButton) {
@@ -333,7 +289,7 @@ public class Signup implements ActionListener {
                 passField.setEchoChar((char) 0);
             } else {
                 toggleButton.setIcon(off);
-                passField.setEchoChar('*');
+                passField.setEchoChar('•');
             }
         }
 
@@ -343,7 +299,7 @@ public class Signup implements ActionListener {
                 confpassField.setEchoChar((char) 0);
             } else {
                 toggleButton2.setIcon(off);
-                confpassField.setEchoChar('*');
+                confpassField.setEchoChar('•');
             }
         }
 
@@ -353,13 +309,12 @@ public class Signup implements ActionListener {
         }
 
         else if (e.getSource() == exitButton) {
-            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Alart!",
+            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit Confirmation",
                     JOptionPane.YES_NO_OPTION);
 
-            if (yesORno == 0) {
-                System.exit(1);
+            if (yesORno == JOptionPane.YES_OPTION) {
+                System.exit(0);
             }
         }
     }
-
 }

@@ -15,18 +15,17 @@ public class Login implements ActionListener {
     private JFrame frame;
     private JLabel username;
     private JLabel password;
-    private JTextField userField;
-    private JPasswordField passField;
-    private JButton loginButton;
+    private UIStyle.ModernTextField userField;
+    private UIStyle.ModernPasswordField passField;
+    private UIStyle.ModernButton loginButton;
     private JButton forgot;
-    private JButton signup;
+    private UIStyle.ModernButton signup;
     private JButton exitButton;
     private JButton skipButton;
     private ImageIcon on;
     private ImageIcon off;
     private JToggleButton toggleButton;
     private Container c;
-    private ImageIcon welcome;
     private Cursor cursor;
     protected static boolean loginFlag;
     public static String USERNAME;
@@ -39,143 +38,148 @@ public class Login implements ActionListener {
         loginFlag = false;
         frame = new JFrame();
         frame.setBounds(50, 50, 850, 550);
-        frame.setTitle("Login");
+        frame.setTitle("Grocery Shop Management - Login");
         frame.setLayout(null);
         frame.setVisible(true);
         c = frame.getContentPane();
-        c.setBackground(Color.decode("#24292e"));
+        c.setBackground(UIStyle.BG_DARK);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         ImageIcon icon = new ImageIcon("images/market.jpg");
         frame.setIconImage(icon.getImage());
-        frame.setLocationRelativeTo(null);
 
         cursor = new Cursor(Cursor.HAND_CURSOR);
 
-        welcome = new ImageIcon("images/welcome2.png");
-        JLabel imgLabel = new JLabel(welcome);
-        imgLabel.setBounds(45, 25, welcome.getIconWidth(), welcome.getIconHeight());
-        frame.add(imgLabel);
+        // --- LEFT BRANDING CARD ---
+        UIStyle.RoundedPanel leftCard = new UIStyle.RoundedPanel(16, UIStyle.PANEL_BG, UIStyle.PANEL_BORDER);
+        leftCard.setBounds(40, 40, 360, 430);
+        leftCard.setLayout(null);
+        frame.add(leftCard);
 
-        ImageIcon login = new ImageIcon("images/login logo2.png");
-        JLabel imgLabel2 = new JLabel(login);
-        imgLabel2.setBounds(30, 110, login.getIconWidth(), login.getIconHeight());
-        frame.add(imgLabel2);
+        ImageIcon welcome = new ImageIcon("images/login logo2.png");
+        Image scaledImage = welcome.getImage().getScaledInstance(180, 160, Image.SCALE_SMOOTH);
+        JLabel imgLabel = new JLabel(new ImageIcon(scaledImage));
+        imgLabel.setBounds(90, 30, 180, 160);
+        leftCard.add(imgLabel);
 
-        JLabel lo = new JLabel("LOGIN");
-        lo.setBounds(600, 140, 200, 30);
-        Font loFont = new Font("Verdana", Font.BOLD, 22);
-        lo.setFont(loFont);
-        lo.setForeground(new Color(215, 210, 203));
-        frame.add(lo);
+        JLabel brandTitle = new JLabel("GROCERY SHOP", SwingConstants.CENTER);
+        brandTitle.setBounds(20, 210, 320, 32);
+        brandTitle.setFont(UIStyle.FONT_TITLE);
+        brandTitle.setForeground(UIStyle.COLOR_PRIMARY);
+        leftCard.add(brandTitle);
 
-        username = new JLabel("Username");
-        username.setBounds(520, 200, 200, 30);
-        Font usernameFont = new Font("Verdana", Font.PLAIN, 18);
-        username.setFont(usernameFont);
-        username.setForeground(new Color(215, 210, 203));
-        frame.add(username);
+        JLabel brandSub = new JLabel("Management System", SwingConstants.CENTER);
+        brandSub.setBounds(20, 245, 320, 24);
+        brandSub.setFont(UIStyle.FONT_SUBHEADER);
+        brandSub.setForeground(UIStyle.TEXT_SECONDARY);
+        leftCard.add(brandSub);
 
-        userField = new JTextField();
-        userField.setBounds(520, 235, 236, 30);
-        Font userfieldFont = new Font("Times New Roman", Font.BOLD, 17);
-        userField.setFont(userfieldFont);
-        userField.setOpaque(false);
-        userField.setForeground(new Color(219, 226, 233));
-        userField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(179, 63, 64));
-        userField.setBorder(redBorder);
-        frame.add(userField);
+        JLabel descLabel = new JLabel("<html><center>Manage inventory, users, shops and sales effortlessly with modern tools.</center></html>", SwingConstants.CENTER);
+        descLabel.setBounds(30, 280, 300, 50);
+        descLabel.setFont(UIStyle.FONT_BODY);
+        descLabel.setForeground(UIStyle.TEXT_MUTED);
+        leftCard.add(descLabel);
 
-        password = new JLabel("Password");
-        password.setBounds(520, 275, 200, 30);
-        Font passwordFont = new Font("Verdana", Font.PLAIN, 18);
-        password.setFont(passwordFont);
-        password.setForeground(new Color(215, 210, 203));
-        frame.add(password);
-
-        passField = new JPasswordField();
-        passField.setBounds(520, 310, 212, 30);
-        Font passfieldFont = new Font("Verdana", Font.BOLD, 17);
-        passField.setFont(passfieldFont);
-        passField.setOpaque(false);
-        passField.setForeground(new Color(219, 226, 233));
-        passField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder2 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(179, 63, 64));
-        passField.setBorder(redBorder2);
-        passField.setEchoChar('*');
-        frame.add(passField);
-
-        forgot = new JButton("Forgotten Password ?");
-        forgot.setBounds(648, 343, 120, 19);
-        Font forgotFont = new Font("Monospace", Font.BOLD, 10);
-        forgot.setBorder(BorderFactory.createEmptyBorder());
-        forgot.setFont(forgotFont);
-        forgot.setOpaque(false);
-        forgot.setForeground(new Color(179, 63, 64));
-        forgot.setOpaque(false);
-        forgot.setBackground(new Color(0, 0, 0, 0));
-        frame.add(forgot);
-        forgot.setCursor(cursor);
-
-        skipButton = new JButton("SKIP >>");
-        skipButton.setBounds(748, 0, 120, 19);
-        Font skipButtonFont = new Font("Monospace", Font.BOLD, 14);
+        skipButton = new JButton("Guest Mode (Skip) >>");
+        skipButton.setBounds(80, 360, 200, 30);
+        skipButton.setFont(UIStyle.FONT_BODY_BOLD);
         skipButton.setBorder(BorderFactory.createEmptyBorder());
-        skipButton.setFont(skipButtonFont);
         skipButton.setOpaque(false);
-        skipButton.setForeground(new Color(152, 152, 156));
-        skipButton.setOpaque(false);
+        skipButton.setForeground(UIStyle.TEXT_SECONDARY);
         skipButton.setBackground(new Color(0, 0, 0, 0));
-        frame.add(skipButton);
         skipButton.setCursor(cursor);
+        leftCard.add(skipButton);
+
+        // --- RIGHT LOGIN CARD ---
+        UIStyle.RoundedPanel rightCard = new UIStyle.RoundedPanel(16, UIStyle.PANEL_BG, UIStyle.PANEL_BORDER);
+        rightCard.setBounds(430, 40, 370, 430);
+        rightCard.setLayout(null);
+        frame.add(rightCard);
+
+        JLabel loginHeader = new JLabel("Sign In");
+        loginHeader.setBounds(35, 30, 200, 32);
+        loginHeader.setFont(UIStyle.FONT_TITLE);
+        loginHeader.setForeground(UIStyle.TEXT_PRIMARY);
+        rightCard.add(loginHeader);
+
+        JLabel loginSub = new JLabel("Enter your credentials to access your account");
+        loginSub.setBounds(35, 62, 300, 20);
+        loginSub.setFont(UIStyle.FONT_SMALL);
+        loginSub.setForeground(UIStyle.TEXT_MUTED);
+        rightCard.add(loginSub);
+
+        // Username Field
+        username = new JLabel("Username");
+        username.setBounds(35, 100, 200, 20);
+        username.setFont(UIStyle.FONT_BODY_BOLD);
+        username.setForeground(UIStyle.TEXT_PRIMARY);
+        rightCard.add(username);
+
+        userField = new UIStyle.ModernTextField("Enter username");
+        userField.setBounds(35, 125, 300, 36);
+        rightCard.add(userField);
+
+        // Password Field
+        password = new JLabel("Password");
+        password.setBounds(35, 175, 200, 20);
+        password.setFont(UIStyle.FONT_BODY_BOLD);
+        password.setForeground(UIStyle.TEXT_PRIMARY);
+        rightCard.add(password);
+
+        passField = new UIStyle.ModernPasswordField("Enter password");
+        passField.setBounds(35, 200, 255, 36);
+        rightCard.add(passField);
 
         on = new ImageIcon("images/tg1.png");
         off = new ImageIcon("images/tg2.png");
         toggleButton = new JToggleButton(off);
-        toggleButton.setBounds(720, 300, 40, 40);
-        toggleButton.setBackground(new Color(0, 0, 0, 0));
-        toggleButton.setForeground(new Color(0, 0, 0, 0));
+        toggleButton.setBounds(298, 200, 36, 36);
+        toggleButton.setBackground(UIStyle.INPUT_BG);
         toggleButton.setOpaque(false);
-        toggleButton.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder3 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(179, 63, 64));
-        toggleButton.setBorder(redBorder3);
-        frame.add(toggleButton);
+        toggleButton.setFocusPainted(false);
+        toggleButton.setBorder(BorderFactory.createLineBorder(UIStyle.INPUT_BORDER, 1));
+        toggleButton.setCursor(cursor);
+        rightCard.add(toggleButton);
 
-        ImageIcon loginb = new ImageIcon("images/Login_Button.png");
-        loginButton = new JButton(loginb);
-        loginButton.setBounds(600, 370, loginb.getIconWidth(), loginb.getIconHeight());
-        loginButton.setBackground(new Color(0, 0, 0, 0));
-        loginButton.setOpaque(false);
-        loginButton.setBorder(BorderFactory.createEmptyBorder());
-        loginButton.setCursor(cursor);
-        frame.add(loginButton);
+        // Forgot password
+        forgot = new JButton("Forgot Password?");
+        forgot.setBounds(205, 240, 130, 22);
+        forgot.setFont(UIStyle.FONT_SMALL);
+        forgot.setBorder(BorderFactory.createEmptyBorder());
+        forgot.setOpaque(false);
+        forgot.setForeground(UIStyle.COLOR_PRIMARY);
+        forgot.setBackground(new Color(0, 0, 0, 0));
+        forgot.setCursor(cursor);
+        rightCard.add(forgot);
 
-        ImageIcon exit = new ImageIcon("images/Exit.png");
-        exitButton = new JButton(exit);
-        exitButton.setBounds(802, 478, exit.getIconWidth(), exit.getIconHeight());
-        exitButton.setBackground(Color.black);
+        // Login Button
+        loginButton = new UIStyle.ModernButton("Sign In", UIStyle.COLOR_PRIMARY, UIStyle.COLOR_PRIMARY_HOVER);
+        loginButton.setBounds(35, 275, 300, 42);
+        rightCard.add(loginButton);
+
+        // Divider
+        JLabel divider = new JLabel("------------------ OR ------------------", SwingConstants.CENTER);
+        divider.setBounds(35, 325, 300, 20);
+        divider.setFont(UIStyle.FONT_SMALL);
+        divider.setForeground(UIStyle.TEXT_MUTED);
+        rightCard.add(divider);
+
+        // Signup Button
+        signup = new UIStyle.ModernButton("Create New Account", UIStyle.COLOR_SUCCESS, UIStyle.COLOR_SUCCESS_HOVER);
+        signup.setBounds(35, 355, 300, 38);
+        rightCard.add(signup);
+
+        // Exit Button (Top Right corner of frame)
+        exitButton = new JButton("✕");
+        exitButton.setBounds(795, 10, 30, 30);
+        exitButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        exitButton.setForeground(UIStyle.TEXT_MUTED);
         exitButton.setOpaque(false);
+        exitButton.setContentAreaFilled(false);
         exitButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(exitButton);
         exitButton.setCursor(cursor);
-
-        ImageIcon singupImage = new ImageIcon("images/Signup_Text.png");
-        signup = new JButton(singupImage);
-        signup.setBounds(610, 482, singupImage.getIconWidth(), singupImage.getIconHeight());
-        signup.setBackground(Color.black);
-        signup.setOpaque(false);
-        signup.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(signup);
-        signup.setCursor(cursor);
-
-        JLabel sign = new JLabel("Don't have an account?");
-        sign.setBounds(450, 472, 200, 50);
-        Font signFont = new Font("Verdana", Font.PLAIN, 13);
-        sign.setFont(signFont);
-        sign.setForeground(new Color(215, 210, 203));
-        frame.add(sign);
+        frame.add(exitButton);
 
         toggleButton.addActionListener(this);
         signup.addActionListener(this);
@@ -187,7 +191,7 @@ public class Login implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String user = userField.getText();
-        String pass = passField.getText();
+        String pass = new String(passField.getPassword());
         boolean userEmpty = user.isEmpty();
         boolean passEmpty = pass.isEmpty();
 
@@ -197,7 +201,7 @@ public class Login implements ActionListener {
                 passField.setEchoChar((char) 0);
             } else {
                 toggleButton.setIcon(off);
-                passField.setEchoChar('*');
+                passField.setEchoChar('•');
             }
         }
 
@@ -209,24 +213,21 @@ public class Login implements ActionListener {
         else if (e.getSource() == skipButton) {
             frame.setVisible(false);
             new Skip();
-
         }
 
         else if (e.getSource() == exitButton) {
-            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Alart!",
+            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit Confirmation",
                     JOptionPane.YES_NO_OPTION);
 
-            if (yesORno == 0) {
-                System.exit(1);
+            if (yesORno == JOptionPane.YES_OPTION) {
+                System.exit(0);
             }
         }
 
         else if (e.getSource() == loginButton) {
-            if (userEmpty == true || passEmpty == true) {
-                showMessageDialog(null, "Please fill all of the fields.", "Warning!", JOptionPane.WARNING_MESSAGE);
-            }
-
-            else {
+            if (userEmpty || passEmpty) {
+                showMessageDialog(null, "Please fill in both username and password.", "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
                 boolean userbool = false;
                 boolean adminbool = false;
                 try {
@@ -249,25 +250,19 @@ public class Login implements ActionListener {
 
                     // for admin
                     BufferedReader readFile1 = new BufferedReader(new FileReader(".\\files\\admin_login.txt"));
-
-                    // for admin
                     int totalLines1 = 0;
                     while (readFile1.readLine() != null) {
                         totalLines1++;
                     }
                     readFile1.close();
 
-                    // for admin login
                     for (int i = 0; i < totalLines1; i++) {
-
                         String line = Files.readAllLines(Paths.get(".\\files\\admin_login.txt")).get(i);
                         if (line.equals(uname)) {
                             String line2 = Files.readAllLines(Paths.get(".\\files\\admin_login.txt")).get((i + 1));
                             if (line2.equals(pin)) {
-
                                 frame.setVisible(false);
                                 new AdminHome();
-
                                 loginFlag = true;
                                 adminbool = true;
                                 USERNAME = user;
@@ -281,7 +276,7 @@ public class Login implements ActionListener {
                     }
 
                     // for user
-                    if (adminbool == false) {
+                    if (!adminbool) {
                         File userfile = new File(".\\files\\user_login.txt");
                         if (userfile.exists()) {
                             BufferedReader readFile = new BufferedReader(new FileReader(".\\files\\user_login.txt"));
@@ -291,24 +286,18 @@ public class Login implements ActionListener {
                             }
                             readFile.close();
 
-                            // for user login
                             for (int i = 0; i < totalLines; i++) {
-
                                 String line = Files.readAllLines(Paths.get(".\\files\\user_login.txt")).get(i);
                                 if (line.equals(uname)) {
-                                    String line2 = Files.readAllLines(Paths.get(".\\files\\user_login.txt"))
-                                            .get((i + 1));
+                                    String line2 = Files.readAllLines(Paths.get(".\\files\\user_login.txt")).get((i + 1));
                                     if (line2.equals(pin)) {
-
                                         loginFlag = true;
                                         userbool = true;
                                         USERNAME = user;
 
                                         fullName = Files.readAllLines(Paths.get(".\\files\\user_login.txt")).get(i - 1);
-                                        phoneNumber = Files.readAllLines(Paths.get(".\\files\\user_login.txt"))
-                                                .get(i + 2);
-                                        oldPassword = Files.readAllLines(Paths.get(".\\files\\user_login.txt"))
-                                                .get(i + 1);
+                                        phoneNumber = Files.readAllLines(Paths.get(".\\files\\user_login.txt")).get(i + 2);
+                                        oldPassword = Files.readAllLines(Paths.get(".\\files\\user_login.txt")).get(i + 1);
                                         fullUsername = uname;
 
                                         File file3 = new File(".\\files\\" + USERNAME + "_shops.txt");
@@ -318,7 +307,6 @@ public class Login implements ActionListener {
 
                                         frame.setVisible(false);
                                         new CustomerHome();
-
                                         break;
                                     } else {
                                         userbool = false;
@@ -331,28 +319,22 @@ public class Login implements ActionListener {
                             userbool = false;
                         }
                     }
-                    if (userbool == false && adminbool == false) {
-                        showMessageDialog(null, "Invalid Name or Password!", "Warning!", JOptionPane.WARNING_MESSAGE);
+                    if (!userbool && !adminbool) {
+                        showMessageDialog(null, "Invalid Username or Password!", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
-
-                }
-
-                catch (Exception ex) {
-                    if (userbool == false && adminbool == false) {
-                        showMessageDialog(null, "Invalid Name or Password!", "Warning!", JOptionPane.WARNING_MESSAGE);
+                } catch (Exception ex) {
+                    if (!userbool && !adminbool) {
+                        showMessageDialog(null, "Invalid Username or Password!", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
                 }
-
             }
         } else if (e.getSource() == forgot) {
             frame.setVisible(false);
             new ForgetPass();
         }
-
     }
 
     public static boolean getloginFlag() {
         return loginFlag;
     }
-
 }

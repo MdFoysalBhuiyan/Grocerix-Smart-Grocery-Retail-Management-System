@@ -6,3 +6,11 @@ D098
 Kuril
 images/theater.png
 
+Shop Details
+Beauty Parlour
+950X650
+B105
+11000
+Shantinagar
+images/parlour.png
+

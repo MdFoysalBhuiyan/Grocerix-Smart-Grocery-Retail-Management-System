@@ -17,19 +17,18 @@ public class Skip implements ActionListener {
     private JFrame frame;
     private Container c;
     private Cursor cursor;
-    private ImageIcon mallName;
     private JTable table;
     private JScrollPane scroll;
-    private JComboBox combobox;
+    private JComboBox<String> combobox;
     private JLabel imgLabel2;
     private int tablecount;
-    private JPanel panel2;
+    private UIStyle.RoundedPanel panel2;
     private JLabel lblText1, lblText2, lblText3, lblText4, lblText5, lblText6;
     private JLabel label;
-    private JButton confirmButton;
-    private JButton exitButton;
-    private JButton backButton;
-    private JButton logoutButton;
+    private UIStyle.ModernButton confirmButton;
+    private UIStyle.ModernButton exitButton;
+    private UIStyle.ModernButton backButton;
+    private UIStyle.ModernButton logoutButton;
 
     private String type;
     private String typearr[];
@@ -50,47 +49,51 @@ public class Skip implements ActionListener {
     public Skip() {
         frame = new JFrame();
         frame.setBounds(50, 50, 850, 550);
-        frame.setTitle("Available Shops");
+        frame.setTitle("Grocery Shop Management - Available Shops Directory");
         frame.setLayout(null);
         frame.setVisible(true);
         c = frame.getContentPane();
-        c.setBackground(Color.decode("#24292e"));
+        c.setBackground(UIStyle.BG_DARK);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         ImageIcon icon = new ImageIcon("images/market.jpg");
         frame.setIconImage(icon.getImage());
-        frame.setLocationRelativeTo(null);
-
-        label = new JLabel("<----Choose to See Individual Shop Details");
-        label.setVisible(true);
-        label.setBounds(205, 217, 500, 60);
-        label.setForeground(Color.decode("#ede4d9"));
-        Font labelFont = new Font("Times New Roman", Font.PLAIN, 20);
-        label.setFont(labelFont);
-        frame.add(label);
 
         cursor = new Cursor(Cursor.HAND_CURSOR);
 
-        mallName = new ImageIcon("images/welcome3.png");
-        JLabel imgLabel = new JLabel(mallName);
-        imgLabel.setBounds(310, 5, mallName.getIconWidth(), mallName.getIconHeight());
-        frame.add(imgLabel);
-
-        // creating table
-        JLabel details = new JLabel("Available Shops");
-        details.setBounds(360, 30, 250, 60);
-        Font detailsFont = new Font("Times New Roman", Font.PLAIN, 20);
-        details.setFont(detailsFont);
-        details.setForeground(new Color(215, 210, 203));
+        // Header Title
+        JLabel details = new JLabel("Available Shops Directory");
+        details.setBounds(25, 12, 350, 30);
+        details.setFont(UIStyle.FONT_TITLE);
+        details.setForeground(UIStyle.TEXT_PRIMARY);
         frame.add(details);
+
+        // Action Buttons Top Right
+        backButton = new UIStyle.ModernButton("← Back", UIStyle.COLOR_SECONDARY, UIStyle.COLOR_SECONDARY_HOVER);
+        backButton.setBounds(580, 12, 90, 32);
+        frame.add(backButton);
+        backButton.addActionListener(this);
+
+        logoutButton = new UIStyle.ModernButton("🚪 Log Out", UIStyle.COLOR_DANGER, UIStyle.COLOR_DANGER_HOVER);
+        logoutButton.setBounds(680, 12, 100, 32);
+        frame.add(logoutButton);
+        logoutButton.addActionListener(this);
+        if (!Login.loginFlag) {
+            logoutButton.setVisible(false);
+        }
+
+        exitButton = new UIStyle.ModernButton("✕", UIStyle.PANEL_BG, UIStyle.COLOR_DANGER);
+        exitButton.setBounds(790, 12, 30, 32);
+        exitButton.setMargin(new Insets(0,0,0,0));
+        frame.add(exitButton);
+        exitButton.addActionListener(this);
 
         try {
             File file = new File(".\\files\\all_shops.txt");
             if (!file.exists()) {
                 file.createNewFile();
             }
-            Scanner input = new Scanner(file);
 
             BufferedReader readFile1 = new BufferedReader(new FileReader(".\\files\\all_shops.txt"));
             int totalLines1 = 0;
@@ -98,7 +101,6 @@ public class Skip implements ActionListener {
             while (readFile1.readLine() != null) {
                 count2++;
             }
-
             readFile1.close();
 
             for (int j = 0; j < count2; j++) {
@@ -109,28 +111,22 @@ public class Skip implements ActionListener {
             }
             tablecount = totalLines1;
 
-            String titleCol[] = { "Type", "Size(square feet)", "Shop Number", "Rent(TK)", "Place" };
+            String titleCol[] = { "Type", "Size (sq ft)", "Shop No", "Rent (TK)", "Place" };
             String titleRow[][] = new String[totalLines1][5];
 
             typearr = new String[totalLines1];
-
             sizearr = new String[totalLines1];
             rentarr = new String[totalLines1];
-
             quantityarr = new String[totalLines1];
-
             shoparr = new String[totalLines1];
-
             imglinkarr = new String[totalLines1];
 
             String[] combolist = new String[totalLines1 + 1];
-            combolist[0] = "Choose here";
+            combolist[0] = "-- Select Shop --";
             int i = 0;
             int k = 1;
 
             BufferedReader readFile3 = new BufferedReader(new FileReader(".\\files\\all_shops.txt"));
-
-            // for admin
             int totalLines3 = 0;
             while (readFile3.readLine() != null) {
                 totalLines3++;
@@ -138,7 +134,6 @@ public class Skip implements ActionListener {
             readFile3.close();
 
             for (int l = 0; l < totalLines3; l++) {
-
                 String line = Files.readAllLines(Paths.get(".\\files\\all_shops.txt")).get(l);
                 if (line.equals("Shop Details")) {
                     String line2 = Files.readAllLines(Paths.get(".\\files\\all_shops.txt")).get((l + 1));
@@ -184,189 +179,147 @@ public class Skip implements ActionListener {
 
             table = new JTable(titleRow, titleCol);
             table.setEnabled(false);
-            Font tableFont = new Font("Times New Roman", Font.PLAIN, 15);
-            table.setBackground(Color.decode("#ede4d9"));
-            table.setForeground(Color.decode("#24292e"));
-            table.setFont(tableFont);
+            UIStyle.styleTable(table);
 
             scroll = new JScrollPane(table);
-            scroll.setBounds(0, 80, 835, 110);
+            UIStyle.styleScrollPane(scroll);
+            scroll.setBounds(25, 48, 795, 140);
             frame.add(scroll);
 
-            JLabel question = new JLabel("Select a shop for rent");
-            question.setBounds(1, 200, 250, 30);
-            Font questionFont = new Font("Times New Roman", Font.PLAIN, 17);
-            question.setFont(questionFont);
-            question.setForeground(new Color(215, 210, 203));
+            // Controls & Dropdown
+            JLabel question = new JLabel("Select Shop to Inspect");
+            question.setBounds(25, 198, 200, 20);
+            question.setFont(UIStyle.FONT_BODY_BOLD);
+            question.setForeground(UIStyle.TEXT_PRIMARY);
             frame.add(question);
 
-            combobox = new JComboBox(combolist);
-            combobox.setBounds(1, 235, 185, 30);
-            Font comboboxFont = new Font("Times New Roman", Font.PLAIN, 16);
-            combobox.setFont(comboboxFont);
-            combobox.setBackground(Color.decode("#ede4d9"));
-            combobox.setForeground(Color.decode("#24292e"));
+            combobox = new JComboBox<>(combolist);
+            combobox.setBounds(25, 222, 210, 36);
+            combobox.setFont(UIStyle.FONT_BODY);
+            combobox.setBackground(UIStyle.INPUT_BG);
+            combobox.setForeground(UIStyle.TEXT_PRIMARY);
             frame.add(combobox);
 
-            lblText1 = new JLabel();
-            lblText1.setBounds(0, 0, 360, 60);
-            lblText1.setForeground(Color.decode("#ede4d9"));
-            Font lblText1Font = new Font("Times New Roman", Font.PLAIN, 18);
-            lblText1.setFont(lblText1Font);
+            label = new JLabel("Select a shop from the dropdown to view details", SwingConstants.CENTER);
+            label.setBounds(250, 260, 570, 40);
+            label.setForeground(UIStyle.TEXT_MUTED);
+            label.setFont(UIStyle.FONT_SUBHEADER);
+            frame.add(label);
 
-            lblText2 = new JLabel();
-            lblText2.setBounds(0, 30, 360, 60);
-            lblText2.setForeground(Color.decode("#ede4d9"));
-            Font lblText2Font = new Font("Times New Roman", Font.PLAIN, 18);
-            lblText2.setFont(lblText2Font);
-
-            lblText3 = new JLabel();
-            lblText3.setBounds(0, 90, 360, 60);
-            lblText3.setForeground(Color.decode("#ede4d9"));
-            Font lblText3Font = new Font("Times New Roman", Font.PLAIN, 18);
-            lblText3.setFont(lblText3Font);
-
-            lblText4 = new JLabel();
-            lblText4.setBounds(0, 60, 360, 60);
-            lblText4.setForeground(Color.decode("#ede4d9"));
-            Font lblText4Font = new Font("Times New Roman", Font.PLAIN, 18);
-            lblText4.setFont(lblText4Font);
-
-            lblText5 = new JLabel();
-            lblText5.setBounds(0, 150, 360, 60);
-            lblText5.setForeground(Color.white);
-            Font lblText5Font = new Font("Times New Roman", Font.PLAIN, 19);
-            lblText5.setFont(lblText5Font);
-
-            lblText6 = new JLabel();
-            lblText6.setBounds(0, 120, 360, 60);
-            lblText6.setForeground(Color.white);
-            Font lblText6Font = new Font("Times New Roman", Font.PLAIN, 19);
-            lblText6.setFont(lblText6Font);
-
+            // Preview Image Label
             imgLabel2 = new JLabel();
-            panel2 = new JPanel();
-            panel2.setBounds(485, 235, 360, 200);
+            imgLabel2.setBounds(250, 200, 200, 200);
+            imgLabel2.setVisible(false);
+            frame.add(imgLabel2);
+
+            // Details Card Panel
+            panel2 = new UIStyle.RoundedPanel(12, UIStyle.PANEL_BG, UIStyle.PANEL_BORDER);
+            panel2.setBounds(465, 198, 355, 290);
             panel2.setLayout(null);
-            panel2.setVisible(true);
-            panel2.setOpaque(false);
+            panel2.setVisible(false);
             frame.add(panel2);
 
+            lblText1 = new JLabel();
+            lblText1.setBounds(20, 15, 315, 24);
+            lblText1.setFont(UIStyle.FONT_SUBHEADER);
+            lblText1.setForeground(UIStyle.COLOR_PRIMARY);
             panel2.add(lblText1);
+
+            lblText2 = new JLabel();
+            lblText2.setBounds(20, 45, 315, 22);
+            lblText2.setFont(UIStyle.FONT_BODY_BOLD);
+            lblText2.setForeground(UIStyle.COLOR_SUCCESS);
             panel2.add(lblText2);
+
+            lblText4 = new JLabel();
+            lblText4.setBounds(20, 75, 315, 22);
+            lblText4.setFont(UIStyle.FONT_BODY);
+            lblText4.setForeground(UIStyle.TEXT_PRIMARY);
             panel2.add(lblText4);
-            panel2.add(lblText3);
-            panel2.add(lblText5);
+
+            lblText6 = new JLabel();
+            lblText6.setBounds(20, 105, 315, 22);
+            lblText6.setFont(UIStyle.FONT_BODY);
+            lblText6.setForeground(UIStyle.TEXT_PRIMARY);
             panel2.add(lblText6);
+
+            lblText3 = new JLabel();
+            lblText3.setBounds(20, 135, 315, 22);
+            lblText3.setFont(UIStyle.FONT_BODY);
+            lblText3.setForeground(UIStyle.TEXT_SECONDARY);
+            panel2.add(lblText3);
+
+            lblText5 = new JLabel();
+            lblText5.setBounds(20, 170, 315, 20);
+            lblText5.setFont(UIStyle.FONT_SMALL);
+            lblText5.setForeground(UIStyle.TEXT_MUTED);
+            panel2.add(lblText5);
+
+            confirmButton = new UIStyle.ModernButton("Confirm Rent Now", UIStyle.COLOR_SUCCESS, UIStyle.COLOR_SUCCESS_HOVER);
+            confirmButton.setBounds(20, 205, 315, 42);
+            confirmButton.setVisible(false);
+            panel2.add(confirmButton);
+            confirmButton.addActionListener(this);
 
         } catch (Exception ex) {
             System.out.println(ex);
         }
 
-        ImageIcon confirmimg = new ImageIcon("images/confirm.png");
-        confirmButton = new JButton(confirmimg);
-        confirmButton.setBounds(167, 166, confirmimg.getIconWidth(), confirmimg.getIconHeight());
-        confirmButton.setBackground(Color.black);
-        confirmButton.setVisible(false);
-        confirmButton.setOpaque(false);
-        confirmButton.setBorder(BorderFactory.createEmptyBorder());
-        confirmButton.setCursor(cursor);
-        panel2.add(confirmButton);
-
-        ImageIcon exit = new ImageIcon("images/Exit.png");
-        exitButton = new JButton(exit);
-        exitButton.setBounds(802, 478, exit.getIconWidth(), exit.getIconHeight());
-        exitButton.setBackground(Color.black);
-        exitButton.setOpaque(false);
-        exitButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(exitButton);
-
-        ImageIcon backimg = new ImageIcon("images/previous.png");
-        backButton = new JButton(backimg);
-        backButton.setBounds(0, 479, backimg.getIconWidth(), backimg.getIconHeight());
-        backButton.setBackground(Color.black);
-        backButton.setOpaque(false);
-        backButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(backButton);
-
-        ImageIcon logout = new ImageIcon("images/logout.png");
-        logoutButton = new JButton(logout);
-        logoutButton.setBounds(807, 2, logout.getIconWidth(), logout.getIconHeight());
-        logoutButton.setBackground(Color.black);
-        logoutButton.setOpaque(false);
-        logoutButton.setVisible(false);
-        logoutButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(logoutButton);
-        if (Login.loginFlag == true) {
-            logoutButton.setVisible(true);
-        }
-
         combobox.addActionListener(this);
-        confirmButton.addActionListener(this);
-        exitButton.addActionListener(this);
-        backButton.addActionListener(this);
-        logoutButton.addActionListener(this);
     }
 
     public void actionPerformed(ActionEvent e) {
-
         if (e.getSource() == combobox) {
-
             String list = combobox.getSelectedItem().toString();
-            int index = combobox.getSelectedIndex();
+            boolean match = false;
 
             for (int i = 0; i < tablecount; i++) {
-                label.setVisible(false);
-                panel2.setVisible(true);
-                imgLabel2.setVisible(true);
-                confirmButton.setVisible(true);
-
                 if (list.equals(typearr[i])) {
+                    match = true;
+                    label.setVisible(false);
+                    panel2.setVisible(true);
+                    imgLabel2.setVisible(true);
+                    confirmButton.setVisible(true);
+
                     count2 = i;
                     userList = list;
                     String line = imglinkarr[i];
-                    imgLabel2.setIcon(new ImageIcon(line));
-                    imgLabel2.setBounds(220, 235, 250, 250);
-                    frame.add(imgLabel2);
-                    lblText1.setText("You Have Selected : " + typearr[i]);
-                    lblText2.setText("Rent Per Month : " + rentarr[i] + " TK");
-                    lblText4.setText("Shop Size : " + sizearr[i] + " Square Feet");
-                    lblText6.setText("Shop No : " + shoparr[i]);
-                    lblText3.setText("Place : " + quantityarr[i]);
 
-                    lblText5.setText("Confirm Rent-->");
+                    ImageIcon rawIcon = new ImageIcon(line);
+                    Image scaled = rawIcon.getImage().getScaledInstance(190, 190, Image.SCALE_SMOOTH);
+                    imgLabel2.setIcon(new ImageIcon(scaled));
+                    imgLabel2.setBounds(255, 230, 190, 190);
+
+                    lblText1.setText(typearr[i]);
+                    lblText2.setText("Rent: " + rentarr[i] + " TK / Month");
+                    lblText4.setText("Size: " + sizearr[i] + " Sq. Ft.");
+                    lblText6.setText("Shop Number: " + shoparr[i]);
+                    lblText3.setText("Location: " + quantityarr[i]);
+                    lblText5.setText("Click below to finalize rental agreement");
                     break;
-
-                } else {
-
-                    label.setVisible(true);
-                    panel2.setVisible(false);
-                    imgLabel2.setVisible(false);
-                    confirmButton.setVisible(false);
-
                 }
             }
 
+            if (!match) {
+                label.setVisible(true);
+                panel2.setVisible(false);
+                imgLabel2.setVisible(false);
+                confirmButton.setVisible(false);
+            }
         } else if (e.getSource() == confirmButton) {
-
-            if (Login.loginFlag == false) {
-                JOptionPane.showMessageDialog(null, "Please Sign Up First", "Error",
+            if (!Login.loginFlag) {
+                JOptionPane.showMessageDialog(null, "Please Sign Up or Log In first to rent a shop.", "Authentication Required",
                         JOptionPane.WARNING_MESSAGE);
             } else {
-                int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Confirmation Alart!",
+                int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure you want to rent this shop?", "Confirmation",
                         JOptionPane.YES_NO_OPTION);
 
-                if (yesORno == 0) {
+                if (yesORno == JOptionPane.YES_OPTION) {
                     String line = ".\\files\\" + Login.USERNAME + "_shops.txt";
                     try {
                         File file = new File(line);
                         if (!file.exists()) {
                             file.createNewFile();
-                            FileWriter fileWriter = new FileWriter(file, true);
-                            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                            PrintWriter printWriter = new PrintWriter(bufferedWriter);
-
-                            printWriter.close();
                         }
                         for (int j = 0; j < tablecount; j++) {
                             if (userList.equals(typearr[j])) {
@@ -388,7 +341,6 @@ public class Skip implements ActionListener {
                                 File oldFile = new File(".\\files\\all_shops.txt");
                                 File newFile = new File(".\\files\\temp2.txt.txt");
                                 int l = 0;
-
                                 String currentline;
 
                                 FileWriter fileWriter2 = new FileWriter(tempfile, true);
@@ -407,8 +359,7 @@ public class Skip implements ActionListener {
                                 FileReader fr = new FileReader(".\\files\\all_shops.txt");
                                 BufferedReader br = new BufferedReader(fr);
 
-                                BufferedReader readFile3 = new BufferedReader(
-                                        new FileReader(".\\files\\all_shops.txt"));
+                                BufferedReader readFile3 = new BufferedReader(new FileReader(".\\files\\all_shops.txt"));
                                 int totalLines3 = 0;
                                 while (readFile3.readLine() != null) {
                                     totalLines3++;
@@ -440,7 +391,6 @@ public class Skip implements ActionListener {
                                     } else {
                                         printWriter3.println(currentline);
                                     }
-
                                 }
 
                                 printWriter3.println(Login.USERNAME);
@@ -465,33 +415,27 @@ public class Skip implements ActionListener {
                                 break;
                             }
                         }
-
                     } catch (Exception ex) {
                         System.out.println(ex);
                     }
                 }
             }
-
-        }
-
-        else if (e.getSource() == exitButton) {
-            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Alart!",
+        } else if (e.getSource() == exitButton) {
+            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit Confirmation",
                     JOptionPane.YES_NO_OPTION);
 
-            if (yesORno == 0) {
-                System.exit(1);
+            if (yesORno == JOptionPane.YES_OPTION) {
+                System.exit(0);
             }
         } else if (e.getSource() == backButton) {
-            if (Login.loginFlag == true) {
+            if (Login.loginFlag) {
                 frame.setVisible(false);
                 new CustomerHome();
             } else {
                 frame.setVisible(false);
                 new Login();
             }
-        }
-
-        else if (e.getSource() == logoutButton) {
+        } else if (e.getSource() == logoutButton) {
             frame.setVisible(false);
             new Login();
         }

@@ -24,221 +24,159 @@ public class AddShop implements ActionListener {
     private JLabel max;
     private JLabel imgLabel2;
 
-    private JTextField attach;
-    private JTextField typeField;
-    private JTextField rentField;
-    private JTextField sizeField;
-    private JTextField shopField;
-    private JTextField placeField;
+    private UIStyle.ModernTextField attach;
+    private UIStyle.ModernTextField typeField;
+    private UIStyle.ModernTextField rentField;
+    private UIStyle.ModernTextField sizeField;
+    private UIStyle.ModernTextField shopField;
+    private UIStyle.ModernTextField placeField;
 
-    private JButton exitButton;
-    private JButton attachButton;
-    private JButton submitButton;
-    private JButton backButton;
-    private JButton logoutButton;
+    private UIStyle.ModernButton exitButton;
+    private UIStyle.ModernButton attachButton;
+    private UIStyle.ModernButton submitButton;
+    private UIStyle.ModernButton backButton;
+    private UIStyle.ModernButton logoutButton;
 
-    private JPanel panel;
-
+    private UIStyle.RoundedPanel panel;
     private Cursor cursor;
 
     public AddShop() {
-
         frame = new JFrame();
         frame.setBounds(50, 50, 850, 550);
-        frame.setTitle("Add Shop");
+        frame.setTitle("Grocery Shop Management - Add New Shop");
         frame.setLayout(null);
         frame.setVisible(true);
         c = frame.getContentPane();
-        c.setBackground(Color.decode("#24292e"));
+        c.setBackground(UIStyle.BG_DARK);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         ImageIcon icon = new ImageIcon("images/market.jpg");
         frame.setIconImage(icon.getImage());
-        frame.setLocationRelativeTo(null);
 
         cursor = new Cursor(Cursor.HAND_CURSOR);
 
-        panel = new JPanel();
-        panel.setBounds(520, 90, 260, 260);
+        // Header Title
+        JLabel addTitle = new JLabel("Add New Shop Details");
+        addTitle.setBounds(40, 20, 350, 32);
+        addTitle.setFont(UIStyle.FONT_TITLE);
+        addTitle.setForeground(UIStyle.TEXT_PRIMARY);
+        frame.add(addTitle);
+
+        // --- LEFT FORM CARD ---
+        UIStyle.RoundedPanel formCard = new UIStyle.RoundedPanel(16, UIStyle.PANEL_BG, UIStyle.PANEL_BORDER);
+        formCard.setBounds(40, 65, 450, 420);
+        formCard.setLayout(null);
+        frame.add(formCard);
+
+        // Type
+        type = new JLabel("Shop Category / Type");
+        type.setBounds(25, 20, 200, 18);
+        type.setFont(UIStyle.FONT_BODY_BOLD);
+        type.setForeground(UIStyle.TEXT_PRIMARY);
+        formCard.add(type);
+
+        typeField = new UIStyle.ModernTextField("e.g. Super Shop");
+        typeField.setBounds(25, 40, 400, 34);
+        formCard.add(typeField);
+
+        // Location / Place
+        place = new JLabel("Location / Place");
+        place.setBounds(25, 82, 200, 18);
+        place.setFont(UIStyle.FONT_BODY_BOLD);
+        place.setForeground(UIStyle.TEXT_PRIMARY);
+        formCard.add(place);
+
+        placeField = new UIStyle.ModernTextField("e.g. Level 1, Block A");
+        placeField.setBounds(25, 102, 400, 34);
+        formCard.add(placeField);
+
+        // Size & Shop No in 2 columns
+        size = new JLabel("Size (Sq. Ft.)");
+        size.setBounds(25, 144, 180, 18);
+        size.setFont(UIStyle.FONT_BODY_BOLD);
+        size.setForeground(UIStyle.TEXT_PRIMARY);
+        formCard.add(size);
+
+        sizeField = new UIStyle.ModernTextField("500");
+        sizeField.setBounds(25, 164, 190, 34);
+        formCard.add(sizeField);
+
+        shopNo = new JLabel("Shop Number");
+        shopNo.setBounds(235, 144, 180, 18);
+        shopNo.setFont(UIStyle.FONT_BODY_BOLD);
+        shopNo.setForeground(UIStyle.TEXT_PRIMARY);
+        formCard.add(shopNo);
+
+        shopField = new UIStyle.ModernTextField("S-101");
+        shopField.setBounds(235, 164, 190, 34);
+        formCard.add(shopField);
+
+        // Rent
+        rent = new JLabel("Monthly Rent (TK)");
+        rent.setBounds(25, 206, 200, 18);
+        rent.setFont(UIStyle.FONT_BODY_BOLD);
+        rent.setForeground(UIStyle.TEXT_PRIMARY);
+        formCard.add(rent);
+
+        rentField = new UIStyle.ModernTextField("15000");
+        rentField.setBounds(25, 226, 400, 34);
+        formCard.add(rentField);
+
+        // Action buttons inside form card
+        submitButton = new UIStyle.ModernButton("Save Shop Details", UIStyle.COLOR_SUCCESS, UIStyle.COLOR_SUCCESS_HOVER);
+        submitButton.setBounds(25, 280, 400, 42);
+        formCard.add(submitButton);
+        submitButton.addActionListener(this);
+
+        backButton = new UIStyle.ModernButton("← Back to Dashboard", UIStyle.COLOR_SECONDARY, UIStyle.COLOR_SECONDARY_HOVER);
+        backButton.setBounds(25, 332, 400, 36);
+        formCard.add(backButton);
+        backButton.addActionListener(this);
+
+        // --- RIGHT IMAGE ATTACHMENT CARD ---
+        UIStyle.RoundedPanel rightCard = new UIStyle.RoundedPanel(16, UIStyle.PANEL_BG, UIStyle.PANEL_BORDER);
+        rightCard.setBounds(510, 65, 300, 420);
+        rightCard.setLayout(null);
+        frame.add(rightCard);
+
+        JLabel imgHeader = new JLabel("Shop Photo Preview", SwingConstants.CENTER);
+        imgHeader.setBounds(15, 15, 270, 22);
+        imgHeader.setFont(UIStyle.FONT_BODY_BOLD);
+        imgHeader.setForeground(UIStyle.TEXT_PRIMARY);
+        rightCard.add(imgHeader);
+
+        panel = new UIStyle.RoundedPanel(8, UIStyle.INPUT_BG, UIStyle.INPUT_BORDER);
+        panel.setBounds(30, 45, 240, 240);
         panel.setLayout(null);
-        panel.setVisible(true);
-        panel.setBackground(new Color(49, 111, 112, 50));
-        c.add(panel);
+        rightCard.add(panel);
 
-        JLabel add = new JLabel("Add Shop Details");
-        add.setBounds(360, 0, 200, 30);
-        Font addFont = new Font("Times New Roman", Font.BOLD, 22);
-        add.setFont(addFont);
-        add.setForeground(Color.decode("#8ee0f0"));
-        frame.add(add);
-
-        type = new JLabel("Type :");
-        type.setBounds(150, 30, 150, 50);
-        Font typeFont = new Font("Times New Roman", Font.PLAIN, 20);
-        type.setFont(typeFont);
-        type.setForeground(Color.decode("#8ee0f0"));
-        frame.add(type);
-
-        typeField = new JTextField();
-        typeField.setBounds(150, 80, 236, 30);
-        Font userfieldFont = new Font("Verdana", Font.PLAIN, 17);
-        typeField.setFont(userfieldFont);
-        typeField.setOpaque(false);
-        typeField.setForeground(new Color(219, 226, 233));
-        typeField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder1 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(49, 111, 112));
-        typeField.setBorder(redBorder1);
-        frame.add(typeField);
-
-        place = new JLabel("Place :");
-        place.setBounds(150, 130, 150, 50);
-        Font fullNameFont = new Font("Times New Roman", Font.PLAIN, 20);
-        place.setFont(fullNameFont);
-        place.setForeground(Color.decode("#8ee0f0"));
-        frame.add(place);
-
-        placeField = new JTextField();
-        placeField.setBounds(150, 170, 236, 30);
-        Font fullFieldFont = new Font("Verdana", Font.PLAIN, 17);
-        placeField.setFont(fullFieldFont);
-        placeField.setOpaque(false);
-        placeField.setForeground(new Color(219, 226, 233));
-        placeField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(49, 111, 112));
-        placeField.setBorder(redBorder);
-        frame.add(placeField);
-
-        size = new JLabel("Size :");
-        size.setBounds(150, 220, 150, 50);
-        Font passwordFont = new Font("Times New Roman", Font.PLAIN, 20);
-        size.setFont(passwordFont);
-        size.setForeground(Color.decode("#8ee0f0"));
-        frame.add(size);
-
-        sizeField = new JTextField();
-        sizeField.setBounds(150, 260, 236, 30);
-        Font passfieldFont = new Font("Verdana", Font.PLAIN, 17);
-        sizeField.setFont(passfieldFont);
-        sizeField.setOpaque(false);
-        sizeField.setForeground(new Color(219, 226, 233));
-        sizeField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder3 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(49, 111, 112));
-        sizeField.setBorder(redBorder3);
-        frame.add(sizeField);
-
-        shopNo = new JLabel("Shop No :");
-        shopNo.setBounds(150, 310, 200, 50);
-        Font cconfpasswordFont = new Font("Times New Roman", Font.PLAIN, 20);
-        shopNo.setFont(cconfpasswordFont);
-        shopNo.setForeground(Color.decode("#8ee0f0"));
-        frame.add(shopNo);
-
-        shopField = new JTextField();
-        shopField.setBounds(150, 350, 236, 30);
-        Font confpassFieldFont = new Font("Verdana", Font.PLAIN, 17);
-        shopField.setFont(confpassFieldFont);
-        shopField.setOpaque(false);
-        shopField.setForeground(new Color(219, 226, 233));
-        shopField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder4 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(49, 111, 112));
-        shopField.setBorder(redBorder4);
-        frame.add(shopField);
-
-        rent = new JLabel("Rent per month :");
-        rent.setBounds(150, 400, 150, 50);
-        Font emailFont = new Font("Times New Roman", Font.PLAIN, 20);
-        rent.setFont(emailFont);
-        rent.setForeground(Color.decode("#8ee0f0"));
-        frame.add(rent);
-
-        rentField = new JTextField();
-        rentField.setBounds(150, 440, 236, 30);
-        Font emailFieldFont = new Font("Verdana", Font.PLAIN, 17);
-        rentField.setFont(emailFieldFont);
-        rentField.setOpaque(false);
-        rentField.setForeground(new Color(219, 226, 233));
-        rentField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder2 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(49, 111, 112));
-        rentField.setBorder(redBorder2);
-        frame.add(rentField);
-
-        JLabel addPhoto = new JLabel("Add a photo here ");
-        addPhoto.setBounds(593, 65, 150, 30);
-        Font addPhotoFont = new Font("Times New Roman", Font.BOLD, 17);
-        addPhoto.setFont(addPhotoFont);
-        addPhoto.setForeground(new Color(49, 111, 112));
-        frame.add(addPhoto);
-
-        max = new JLabel("Max Photo Size 260 * 260");
-        max.setBounds(656, 345, 150, 30);
-        Font maxFont = new Font("Times New Roman", Font.PLAIN, 11);
-        max.setFont(maxFont);
-        max.setForeground(new Color(49, 111, 112));
-        frame.add(max);
-
-        attach = new JTextField();
-        attach.setBounds(540, 365, 220, 30);
-        Font attachFont = new Font("Verdana", Font.PLAIN, 17);
-        attach.setFont(attachFont);
-        attach.setOpaque(false);
-        attach.setForeground(new Color(219, 226, 233));
-        attach.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder5 = BorderFactory.createMatteBorder(0, 0, 0, 0, new Color(49, 111, 112));
-        attach.setBorder(redBorder5);
-        frame.add(attach);
-
-        attachButton = new JButton("Attachment");
-        attachButton.setBounds(540, 395, 100, 30);
-        attachButton.setBackground(new Color(49, 111, 112));
-        attachButton.setForeground(Color.decode("#8ee0f0"));
-        Font attachButtonFont = new Font("Times New Roman", Font.BOLD, 15);
-        attachButton.setFont(attachButtonFont);
-        attachButton.setCursor(cursor);
-        attachButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(attachButton);
-
-        submitButton = new JButton("Submit");
-        submitButton.setBounds(660, 395, 100, 30);
-        submitButton.setBackground(new Color(49, 111, 112));
-        submitButton.setForeground(Color.decode("#8ee0f0"));
-        Font submitButtonFont = new Font("Times New Roman", Font.BOLD, 15);
-        submitButton.setFont(submitButtonFont);
-        submitButton.setCursor(cursor);
-        submitButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(submitButton);
-
-        ImageIcon exit = new ImageIcon("images/Exit.png");
-        exitButton = new JButton(exit);
-        exitButton.setBounds(802, 478, exit.getIconWidth(), exit.getIconHeight());
-        exitButton.setBackground(Color.black);
-        exitButton.setOpaque(false);
-        exitButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(exitButton);
-
-        ImageIcon backimg = new ImageIcon("images/previous.png");
-        backButton = new JButton(backimg);
-        backButton.setBounds(0, 479, backimg.getIconWidth(), backimg.getIconHeight());
-        backButton.setBackground(Color.black);
-        backButton.setOpaque(false);
-        backButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(backButton);
-
-        ImageIcon logout = new ImageIcon("images/logout.png");
-        logoutButton = new JButton(logout);
-        logoutButton.setBounds(807, 2, logout.getIconWidth(), logout.getIconHeight());
-        logoutButton.setBackground(Color.black);
-        logoutButton.setOpaque(false);
-        logoutButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(logoutButton);
-
-        imgLabel2 = new JLabel();
+        imgLabel2 = new JLabel("No Image Selected", SwingConstants.CENTER);
+        imgLabel2.setFont(UIStyle.FONT_SMALL);
+        imgLabel2.setForeground(UIStyle.TEXT_MUTED);
+        imgLabel2.setBounds(0, 0, 240, 240);
         panel.add(imgLabel2);
 
-        logoutButton.addActionListener(this);
-        submitButton.addActionListener(this);
+        attach = new UIStyle.ModernTextField("Attachment Path");
+        attach.setBounds(20, 295, 260, 34);
+        attach.setEditable(false);
+        rightCard.add(attach);
+
+        attachButton = new UIStyle.ModernButton("Select Photo", UIStyle.COLOR_PRIMARY, UIStyle.COLOR_PRIMARY_HOVER);
+        attachButton.setBounds(20, 340, 260, 38);
+        rightCard.add(attachButton);
         attachButton.addActionListener(this);
-        backButton.addActionListener(this);
+
+        // Header Top Actions
+        logoutButton = new UIStyle.ModernButton("Log Out", UIStyle.COLOR_DANGER, UIStyle.COLOR_DANGER_HOVER);
+        logoutButton.setBounds(680, 15, 90, 32);
+        frame.add(logoutButton);
+        logoutButton.addActionListener(this);
+
+        exitButton = new UIStyle.ModernButton("✕", UIStyle.PANEL_BG, UIStyle.COLOR_DANGER);
+        exitButton.setBounds(780, 15, 30, 32);
+        exitButton.setMargin(new Insets(0,0,0,0));
+        frame.add(exitButton);
         exitButton.addActionListener(this);
     }
 
@@ -258,8 +196,7 @@ public class AddShop implements ActionListener {
         boolean attachEmpty = attach1.isEmpty();
 
         if (e.getSource() == submitButton) {
-            if (typeEmpty == false && sizeEmpty == false && rentEmpty == false && shopEmpty == false
-                    && placeEmpty == false && attachEmpty == false) {
+            if (!typeEmpty && !sizeEmpty && !rentEmpty && !shopEmpty && !placeEmpty && !attachEmpty) {
                 try {
                     int n = Integer.parseInt(rent1);
                     String line = ".\\files\\all_shops.txt";
@@ -282,15 +219,13 @@ public class AddShop implements ActionListener {
 
                         boolean flag = true;
                         for (int k = 0; k < totalLines3; k++) {
-
                             String linek = Files.readAllLines(Paths.get(".\\files\\all_shops.txt")).get(k);
                             if (linek.equals(type1)) {
                                 flag = false;
                                 break;
                             }
-
                         }
-                        if (flag == true) {
+                        if (flag) {
                             String image = "";
                             String p = attach1;
                             char ch;
@@ -316,51 +251,52 @@ public class AddShop implements ActionListener {
                             printWriter.println(image);
                             printWriter.println();
                             printWriter.close();
+
+                            showMessageDialog(null, "Shop added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            frame.setVisible(false);
+                            new AdminHome();
                         } else {
-                            JOptionPane.showMessageDialog(null, "Same type shop already exist", "Error",
+                            showMessageDialog(null, "A shop with the same category already exists!", "Error",
                                     JOptionPane.WARNING_MESSAGE);
                         }
-                        frame.setVisible(false);
-                        new AdminHome();
-
                     } catch (Exception ex) {
                         System.out.println(ex);
                     }
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Invalid Rent Field", "Error",
+                    showMessageDialog(null, "Invalid Rent Field (Must be numeric)", "Error",
                             JOptionPane.WARNING_MESSAGE);
                 }
 
-            } else if (typeEmpty == false && sizeEmpty == false && rentEmpty == false && shopEmpty == false
-                    && placeEmpty == false && attachEmpty == true) {
-                JOptionPane.showMessageDialog(null, "Please attach a photo", "Error",
+            } else if (!typeEmpty && !sizeEmpty && !rentEmpty && !shopEmpty && !placeEmpty && attachEmpty) {
+                showMessageDialog(null, "Please select/attach a photo for the shop.", "Error",
                         JOptionPane.WARNING_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "Please fill all the field", "Error",
+                showMessageDialog(null, "Please fill in all the required fields.", "Error",
                         JOptionPane.WARNING_MESSAGE);
             }
-        } else if (e.getSource() == attachButton)
-
-        {
+        } else if (e.getSource() == attachButton) {
             try {
                 JFileChooser chooser = new JFileChooser();
                 chooser.showOpenDialog(null);
                 File f = chooser.getSelectedFile();
-                String filename = f.getAbsolutePath();
-                attach.setText(filename);
-                imgLabel2.setIcon(new ImageIcon(filename));
-                imgLabel2.setBounds(0, 0, 260, 260);
-
+                if (f != null) {
+                    String filename = f.getAbsolutePath();
+                    attach.setText(filename);
+                    ImageIcon rawIcon = new ImageIcon(filename);
+                    Image scaled = rawIcon.getImage().getScaledInstance(240, 240, Image.SCALE_SMOOTH);
+                    imgLabel2.setText("");
+                    imgLabel2.setIcon(new ImageIcon(scaled));
+                    imgLabel2.setBounds(0, 0, 240, 240);
+                }
             } catch (Exception ex) {
                 return;
             }
-
         } else if (e.getSource() == exitButton) {
-            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Alart!",
+            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit Confirmation",
                     JOptionPane.YES_NO_OPTION);
 
-            if (yesORno == 0) {
-                System.exit(1);
+            if (yesORno == JOptionPane.YES_OPTION) {
+                System.exit(0);
             }
         } else if (e.getSource() == logoutButton) {
             frame.setVisible(false);
@@ -370,5 +306,4 @@ public class AddShop implements ActionListener {
             new AdminHome();
         }
     }
-
 }

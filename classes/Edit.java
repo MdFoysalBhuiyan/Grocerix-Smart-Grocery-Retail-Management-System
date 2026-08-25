@@ -14,218 +14,151 @@ import java.time.format.*;
 import classes.*;
 
 public class Edit implements ActionListener {
-
     private Container c;
     private JFrame frame;
     private Cursor cursor;
-    private JPanel panel;
 
-    private JLabel fullName1;
     private JLabel displayName1;
-    private JLabel phoneNumber1;
-    private JLabel oldPassword1;
-    private JLabel userName1;
 
-    private JTextField fullField;
-    private JTextField userField;
-    private JTextField phoneField;
+    private UIStyle.ModernTextField fullField;
+    private UIStyle.ModernTextField userField;
+    private UIStyle.ModernTextField phoneField;
 
     private JLabel full;
     private JLabel user;
     private JLabel phone;
 
-    private JButton fullnameButton;
-    private JButton usernameButton;
-    private JButton phoneButton;
+    private UIStyle.ModernButton fullnameButton;
+    private UIStyle.ModernButton usernameButton;
+    private UIStyle.ModernButton phoneButton;
 
-    private JButton confirmButton1;
-    private JButton confirmButton2;
-    private JButton confirmButton3;
-    private JButton logoutButton;
-    private JButton exitButton;
-    private JButton backButton;
+    private UIStyle.ModernButton confirmButton1;
+    private UIStyle.ModernButton confirmButton2;
+    private UIStyle.ModernButton confirmButton3;
+    private UIStyle.ModernButton logoutButton;
+    private UIStyle.ModernButton exitButton;
+    private UIStyle.ModernButton backButton;
 
     private int check;
 
     public Edit() {
         frame = new JFrame();
         frame.setBounds(50, 50, 850, 550);
-        frame.setTitle("Edit Info");
+        frame.setTitle("Grocery Shop Management - Edit Profile");
         frame.setLayout(null);
         frame.setVisible(true);
         c = frame.getContentPane();
-        c.setBackground(Color.decode("#24292e"));
+        c.setBackground(UIStyle.BG_DARK);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         ImageIcon icon = new ImageIcon("images/market.jpg");
         frame.setIconImage(icon.getImage());
-        frame.setLocationRelativeTo(null);
         check = 0;
 
         cursor = new Cursor(Cursor.HAND_CURSOR);
 
-        ImageIcon profile = new ImageIcon("images/profile.png");
-        JLabel imgLabel = new JLabel(profile);
-        imgLabel.setBounds(350, 0, profile.getIconWidth(), profile.getIconHeight());
-        frame.add(imgLabel);
+        // --- CENTERED CARD PANEL ---
+        UIStyle.RoundedPanel card = new UIStyle.RoundedPanel(16, UIStyle.PANEL_BG, UIStyle.PANEL_BORDER);
+        card.setBounds(200, 35, 450, 440);
+        card.setLayout(null);
+        frame.add(card);
 
-        displayName1 = new JLabel("Edit Infirmation");
-        displayName1.setBounds(354, 150, 200, 50);
-        Font displayName1Font = new Font("Times New Roman", Font.PLAIN, 23);
-        displayName1.setFont(displayName1Font);
-        displayName1.setForeground(Color.decode("#6577b3"));
-        frame.add(displayName1);
+        displayName1 = new JLabel("Edit Account Details", SwingConstants.CENTER);
+        displayName1.setBounds(25, 25, 400, 30);
+        displayName1.setFont(UIStyle.FONT_TITLE);
+        displayName1.setForeground(UIStyle.TEXT_PRIMARY);
+        card.add(displayName1);
 
-        fullnameButton = new JButton("Full Name");
-        fullnameButton.setVisible(true);
-        fullnameButton.setBounds(355, 210, 150, 30);
-        fullnameButton.setBorder(BorderFactory.createEmptyBorder());
-        fullnameButton.setBackground(new Color(49, 111, 112));
-        fullnameButton.setForeground(Color.decode("#8ee0f0"));
-        Font fullnameButtonFont = new Font("Times New Roman", Font.BOLD, 19);
-        fullnameButton.setFont(fullnameButtonFont);
-        fullnameButton.setCursor(cursor);
-        frame.add(fullnameButton);
+        JLabel subTitle = new JLabel("Choose an option to modify your account information", SwingConstants.CENTER);
+        subTitle.setBounds(25, 58, 400, 20);
+        subTitle.setFont(UIStyle.FONT_SMALL);
+        subTitle.setForeground(UIStyle.TEXT_MUTED);
+        card.add(subTitle);
 
-        usernameButton = new JButton("User Name");
-        usernameButton.setVisible(true);
-        usernameButton.setBorder(BorderFactory.createEmptyBorder());
-        usernameButton.setBounds(355, 270, 150, 30);
-        usernameButton.setBackground(new Color(49, 111, 112));
-        usernameButton.setForeground(Color.decode("#8ee0f0"));
-        Font usernameButtonFont = new Font("Times New Roman", Font.BOLD, 19);
-        usernameButton.setFont(usernameButtonFont);
-        usernameButton.setCursor(cursor);
-        frame.add(usernameButton);
+        JSeparator sep = new JSeparator();
+        sep.setBounds(40, 90, 370, 2);
+        sep.setForeground(UIStyle.PANEL_BORDER);
+        card.add(sep);
 
-        phoneButton = new JButton("Phone Number");
-        phoneButton.setVisible(true);
-        phoneButton.setBounds(355, 330, 150, 30);
-        phoneButton.setBorder(BorderFactory.createEmptyBorder());
-        phoneButton.setBackground(new Color(49, 111, 112));
-        phoneButton.setForeground(Color.decode("#8ee0f0"));
-        Font phoneButtonFont = new Font("Times New Roman", Font.BOLD, 19);
-        phoneButton.setFont(phoneButtonFont);
-        phoneButton.setCursor(cursor);
-        frame.add(phoneButton);
+        // Main Choice Buttons
+        fullnameButton = new UIStyle.ModernButton("Edit Full Name", UIStyle.COLOR_PRIMARY, UIStyle.COLOR_PRIMARY_HOVER);
+        fullnameButton.setBounds(60, 120, 330, 42);
+        card.add(fullnameButton);
 
-        ImageIcon exit = new ImageIcon("images/Exit.png");
-        exitButton = new JButton(exit);
-        exitButton.setBounds(802, 478, exit.getIconWidth(), exit.getIconHeight());
-        exitButton.setBackground(Color.black);
-        exitButton.setOpaque(false);
-        exitButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(exitButton);
+        usernameButton = new UIStyle.ModernButton("Edit Username", UIStyle.COLOR_PRIMARY, UIStyle.COLOR_PRIMARY_HOVER);
+        usernameButton.setBounds(60, 180, 330, 42);
+        card.add(usernameButton);
 
-        ImageIcon backimg = new ImageIcon("images/previous.png");
-        backButton = new JButton(backimg);
-        backButton.setBounds(0, 479, backimg.getIconWidth(), backimg.getIconHeight());
-        backButton.setBackground(Color.black);
-        backButton.setOpaque(false);
-        backButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(backButton);
+        phoneButton = new UIStyle.ModernButton("Edit Phone Number", UIStyle.COLOR_PRIMARY, UIStyle.COLOR_PRIMARY_HOVER);
+        phoneButton.setBounds(60, 240, 330, 42);
+        card.add(phoneButton);
 
-        ImageIcon logout = new ImageIcon("images/logout.png");
-        logoutButton = new JButton(logout);
-        logoutButton.setBounds(807, 2, logout.getIconWidth(), logout.getIconHeight());
-        logoutButton.setBackground(Color.black);
-        logoutButton.setOpaque(false);
-        logoutButton.setBorder(BorderFactory.createEmptyBorder());
+        // Edit Input Fields (Initially Hidden)
+        full = new JLabel("Enter New Full Name");
+        full.setBounds(60, 130, 330, 20);
+        full.setFont(UIStyle.FONT_BODY_BOLD);
+        full.setForeground(UIStyle.TEXT_PRIMARY);
+        full.setVisible(false);
+        card.add(full);
+
+        fullField = new UIStyle.ModernTextField("Enter full name");
+        fullField.setBounds(60, 155, 330, 38);
+        fullField.setVisible(false);
+        card.add(fullField);
+
+        confirmButton1 = new UIStyle.ModernButton("Save Full Name", UIStyle.COLOR_SUCCESS, UIStyle.COLOR_SUCCESS_HOVER);
+        confirmButton1.setBounds(60, 210, 330, 42);
+        confirmButton1.setVisible(false);
+        card.add(confirmButton1);
+
+        user = new JLabel("Enter New Username");
+        user.setBounds(60, 130, 330, 20);
+        user.setFont(UIStyle.FONT_BODY_BOLD);
+        user.setForeground(UIStyle.TEXT_PRIMARY);
+        user.setVisible(false);
+        card.add(user);
+
+        userField = new UIStyle.ModernTextField("Enter username");
+        userField.setBounds(60, 155, 330, 38);
+        userField.setVisible(false);
+        card.add(userField);
+
+        confirmButton2 = new UIStyle.ModernButton("Save Username", UIStyle.COLOR_SUCCESS, UIStyle.COLOR_SUCCESS_HOVER);
+        confirmButton2.setBounds(60, 210, 330, 42);
+        confirmButton2.setVisible(false);
+        card.add(confirmButton2);
+
+        phone = new JLabel("Enter New Phone Number (11 digits)");
+        phone.setBounds(60, 130, 330, 20);
+        phone.setFont(UIStyle.FONT_BODY_BOLD);
+        phone.setForeground(UIStyle.TEXT_PRIMARY);
+        phone.setVisible(false);
+        card.add(phone);
+
+        phoneField = new UIStyle.ModernTextField("01712345678");
+        phoneField.setBounds(60, 155, 330, 38);
+        phoneField.setVisible(false);
+        card.add(phoneField);
+
+        confirmButton3 = new UIStyle.ModernButton("Save Phone Number", UIStyle.COLOR_SUCCESS, UIStyle.COLOR_SUCCESS_HOVER);
+        confirmButton3.setBounds(60, 210, 330, 42);
+        confirmButton3.setVisible(false);
+        card.add(confirmButton3);
+
+        backButton = new UIStyle.ModernButton("← Back to Profile", UIStyle.COLOR_SECONDARY, UIStyle.COLOR_SECONDARY_HOVER);
+        backButton.setBounds(60, 370, 330, 38);
+        card.add(backButton);
+
+        // Top Right Actions
+        logoutButton = new UIStyle.ModernButton("Log Out", UIStyle.COLOR_DANGER, UIStyle.COLOR_DANGER_HOVER);
+        logoutButton.setBounds(680, 15, 90, 32);
         frame.add(logoutButton);
 
-        confirmButton1 = new JButton("Confirm");
-        confirmButton1.setVisible(false);
-        confirmButton1.setBounds(390, 290, 80, 30);
-        confirmButton1.setBorder(BorderFactory.createEmptyBorder());
-        confirmButton1.setBackground(new Color(49, 111, 112));
-        confirmButton1.setForeground(Color.decode("#8ee0f0"));
-        Font confirmButtonFont1 = new Font("Times New Roman", Font.BOLD, 15);
-        confirmButton1.setFont(confirmButtonFont1);
-        confirmButton1.setCursor(cursor);
-        frame.add(confirmButton1);
-
-        confirmButton2 = new JButton("Confirm");
-        confirmButton2.setVisible(false);
-        confirmButton2.setBounds(390, 290, 80, 30);
-        confirmButton2.setBorder(BorderFactory.createEmptyBorder());
-        confirmButton2.setBackground(new Color(49, 111, 112));
-        confirmButton2.setForeground(Color.decode("#8ee0f0"));
-        Font confirmButtonFont2 = new Font("Times New Roman", Font.BOLD, 15);
-        confirmButton2.setFont(confirmButtonFont2);
-        confirmButton2.setCursor(cursor);
-        frame.add(confirmButton2);
-
-        confirmButton3 = new JButton("Confirm");
-        confirmButton3.setVisible(false);
-        confirmButton3.setBounds(390, 290, 80, 30);
-        confirmButton3.setBorder(BorderFactory.createEmptyBorder());
-        confirmButton3.setBackground(new Color(49, 111, 112));
-        confirmButton3.setForeground(Color.decode("#8ee0f0"));
-        Font confirmButtonFont3 = new Font("Times New Roman", Font.BOLD, 15);
-        confirmButton3.setFont(confirmButtonFont3);
-        confirmButton3.setCursor(cursor);
-        frame.add(confirmButton3);
-
-        full = new JLabel("Enter your full name :");
-        full.setVisible(false);
-        full.setBounds(354, 210, 250, 30);
-        Font fullFont = new Font("Times New Roman", Font.PLAIN, 17);
-        full.setFont(fullFont);
-        full.setForeground(Color.white);
-        frame.add(full);
-
-        fullField = new JTextField();
-        fullField.setVisible(false);
-        fullField.setBounds(354, 240, 150, 30);
-        Font fullFieldFont = new Font("Times New Roman", Font.PLAIN, 17);
-        fullField.setFont(fullFieldFont);
-        fullField.setOpaque(false);
-        fullField.setForeground(new Color(219, 226, 233));
-        fullField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(49, 111, 112));
-        fullField.setBorder(redBorder);
-        frame.add(fullField);
-
-        user = new JLabel("Enter new user name :");
-        user.setVisible(false);
-        user.setBounds(354, 210, 250, 30);
-        Font userFont = new Font("Times New Roman", Font.PLAIN, 17);
-        user.setFont(userFont);
-        user.setForeground(Color.white);
-        frame.add(user);
-
-        userField = new JTextField();
-        userField.setVisible(false);
-        userField.setBounds(354, 240, 150, 30);
-        Font userFieldFont = new Font("Times New Roman", Font.PLAIN, 17);
-        userField.setFont(userFieldFont);
-        userField.setOpaque(false);
-        userField.setForeground(new Color(219, 226, 233));
-        userField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder2 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(49, 111, 112));
-        userField.setBorder(redBorder2);
-        frame.add(userField);
-
-        phone = new JLabel("Enter new phone number :");
-        phone.setVisible(false);
-        phone.setBounds(354, 210, 250, 30);
-        Font phoneFont = new Font("Times New Roman", Font.PLAIN, 17);
-        phone.setFont(phoneFont);
-        phone.setForeground(Color.white);
-        frame.add(phone);
-
-        phoneField = new JTextField();
-        phoneField.setVisible(false);
-        phoneField.setBounds(354, 240, 173, 30);
-        Font phoneFieldFont = new Font("Times New Roman", Font.PLAIN, 17);
-        phoneField.setFont(phoneFieldFont);
-        phoneField.setOpaque(false);
-        phoneField.setForeground(new Color(219, 226, 233));
-        phoneField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder3 = BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(49, 111, 112));
-        phoneField.setBorder(redBorder3);
-        frame.add(phoneField);
+        exitButton = new UIStyle.ModernButton("✕", UIStyle.PANEL_BG, UIStyle.COLOR_DANGER);
+        exitButton.setBounds(780, 15, 30, 32);
+        exitButton.setMargin(new Insets(0,0,0,0));
+        frame.add(exitButton);
 
         usernameButton.addActionListener(this);
         phoneButton.addActionListener(this);
@@ -237,7 +170,6 @@ public class Edit implements ActionListener {
         logoutButton.addActionListener(this);
         backButton.addActionListener(this);
         exitButton.addActionListener(this);
-
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -250,11 +182,11 @@ public class Edit implements ActionListener {
         }
 
         else if (e.getSource() == exitButton) {
-            int yesORno = JOptionPane.showConfirmDialog(null, "Do you want to exit ?", "Alart!",
+            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit Confirmation",
                     JOptionPane.YES_NO_OPTION);
 
-            if (yesORno == 0) {
-                System.exit(1);
+            if (yesORno == JOptionPane.YES_OPTION) {
+                System.exit(0);
             }
         }
 
@@ -266,17 +198,14 @@ public class Edit implements ActionListener {
 
             confirmButton2.setVisible(false);
             confirmButton3.setVisible(false);
-
             user.setVisible(false);
             phone.setVisible(false);
-
             userField.setVisible(false);
             phoneField.setVisible(false);
 
             usernameButton.setVisible(false);
             fullnameButton.setVisible(false);
             phoneButton.setVisible(false);
-
         }
 
         else if (e.getSource() == usernameButton) {
@@ -287,10 +216,8 @@ public class Edit implements ActionListener {
 
             confirmButton1.setVisible(false);
             confirmButton3.setVisible(false);
-
             full.setVisible(false);
             phone.setVisible(false);
-
             fullField.setVisible(false);
             phoneField.setVisible(false);
 
@@ -310,10 +237,8 @@ public class Edit implements ActionListener {
 
             confirmButton1.setVisible(false);
             confirmButton2.setVisible(false);
-
             full.setVisible(false);
             user.setVisible(false);
-
             fullField.setVisible(false);
             userField.setVisible(false);
 
@@ -330,13 +255,9 @@ public class Edit implements ActionListener {
                 frame.setVisible(false);
                 new Profile();
             } else {
-
                 fullnameButton.setVisible(true);
-                fullnameButton.setBounds(355, 210, 150, 30);
                 usernameButton.setVisible(true);
-                usernameButton.setBounds(355, 270, 150, 30);
                 phoneButton.setVisible(true);
-                phoneButton.setBounds(355, 330, 150, 30);
 
                 confirmButton1.setVisible(false);
                 confirmButton2.setVisible(false);
@@ -351,23 +272,19 @@ public class Edit implements ActionListener {
                 phoneField.setVisible(false);
 
                 check = 0;
-
             }
         }
 
         else if (e.getSource() == confirmButton1) {
-
             name = fullField.getText();
             String newName;
             emptyName = name.isEmpty();
 
-            if (emptyName == true) {
-                showMessageDialog(null, "Enter your name", " Error!", JOptionPane.WARNING_MESSAGE);
+            if (emptyName) {
+                showMessageDialog(null, "Please enter your name", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
                 newName = "Full Name : " + name;
-
                 try {
-
                     FileReader fr1 = new FileReader(".\\files\\user_login.txt");
                     BufferedReader br1 = new BufferedReader(fr1);
                     String currentline1;
@@ -403,7 +320,6 @@ public class Edit implements ActionListener {
                             printWriter2.println(currentline);
                         }
                         l++;
-
                     }
                     printWriter2.flush();
                     printWriter2.close();
@@ -416,12 +332,11 @@ public class Edit implements ActionListener {
                     newFile.renameTo(dumb);
 
                     Login.fullName = newName;
-
+                    showMessageDialog(null, "Full name updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     frame.setVisible(false);
                     new Profile();
 
                 } catch (Exception ex) {
-
                     System.out.println(ex);
                 }
             }
@@ -430,13 +345,12 @@ public class Edit implements ActionListener {
             String newName;
             emptyName = name.isEmpty();
 
-            if (emptyName == true) {
-                showMessageDialog(null, "Enter new user name", " Error!", JOptionPane.WARNING_MESSAGE);
+            if (emptyName) {
+                showMessageDialog(null, "Please enter a new username", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
                 newName = "User Name : " + name;
 
                 try {
-
                     int totalLines = 0;
                     BufferedReader readFile = new BufferedReader(new FileReader(".\\files\\user_login.txt"));
                     while (readFile.readLine() != null) {
@@ -444,7 +358,6 @@ public class Edit implements ActionListener {
                     }
                     readFile.close();
 
-                    // Admin login file checked
                     BufferedReader adminFile = new BufferedReader(new FileReader(".\\files\\admin_login.txt"));
                     int totalLines2 = 0;
                     while (adminFile.readLine() != null) {
@@ -455,7 +368,6 @@ public class Edit implements ActionListener {
                     boolean userflag = false;
                     boolean adminflag = false;
 
-                    // for user
                     for (int i = 0; i < totalLines; i++) {
                         String line = Files.readAllLines(Paths.get(".\\files\\user_login.txt")).get(i);
                         if (line.equals("User Name : " + name)) {
@@ -464,7 +376,6 @@ public class Edit implements ActionListener {
                         }
                     }
 
-                    // for admin
                     for (int i = 0; i < totalLines2; i++) {
                         String line = Files.readAllLines(Paths.get(".\\files\\admin_login.txt")).get(i);
                         if (line.equals("User Name : " + name)) {
@@ -473,7 +384,7 @@ public class Edit implements ActionListener {
                         }
                     }
 
-                    if (adminflag == false && userflag == false) {
+                    if (!adminflag && !userflag) {
                         FileReader fr1 = new FileReader(".\\files\\user_login.txt");
                         BufferedReader br1 = new BufferedReader(fr1);
                         String currentline1;
@@ -508,7 +419,6 @@ public class Edit implements ActionListener {
                                 printWriter2.println(currentline);
                             }
                             l++;
-
                         }
                         printWriter2.flush();
                         printWriter2.close();
@@ -521,45 +431,41 @@ public class Edit implements ActionListener {
                         newFile.renameTo(dumb);
 
                         Login.fullUsername = newName;
-
+                        showMessageDialog(null, "Username updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                         frame.setVisible(false);
                         new Profile();
                     } else {
-                        showMessageDialog(null, "User name already exist", " Error!", JOptionPane.WARNING_MESSAGE);
+                        showMessageDialog(null, "Username already exists!", "Warning", JOptionPane.WARNING_MESSAGE);
                     }
 
                 } catch (Exception ex) {
-
                     System.out.println(ex);
                 }
             }
         }
 
         else if (e.getSource() == confirmButton3) {
-
             name = phoneField.getText();
             String newName;
             emptyName = name.isEmpty();
-            int number;
+            long number;
             int numcount = 0;
             try {
-
-                number = Integer.parseInt(name);
+                number = Long.parseLong(name);
                 if (name.length() != 11)
                     numcount++;
             } catch (Exception ex) {
                 numcount = 1;
             }
 
-            if (emptyName == true) {
-                showMessageDialog(null, "Enter new phone number", " Error!", JOptionPane.WARNING_MESSAGE);
+            if (emptyName) {
+                showMessageDialog(null, "Please enter a new phone number", "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (numcount > 0) {
-                showMessageDialog(null, "Invalid Phone Number", " Error!", JOptionPane.WARNING_MESSAGE);
+                showMessageDialog(null, "Invalid Phone Number (Must be 11 digits)", "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
                 newName = "Phone : " + name;
 
                 try {
-
                     FileReader fr1 = new FileReader(".\\files\\user_login.txt");
                     BufferedReader br1 = new BufferedReader(fr1);
                     String currentline1;
@@ -595,7 +501,6 @@ public class Edit implements ActionListener {
                             printWriter2.println(currentline);
                         }
                         l++;
-
                     }
                     printWriter2.flush();
                     printWriter2.close();
@@ -608,12 +513,11 @@ public class Edit implements ActionListener {
                     newFile.renameTo(dumb);
 
                     Login.phoneNumber = newName;
-
+                    showMessageDialog(null, "Phone number updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     frame.setVisible(false);
                     new Profile();
 
                 } catch (Exception ex) {
-
                     System.out.println(ex);
                 }
             }

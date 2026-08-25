@@ -14,12 +14,11 @@ import classes.*;
 public class ForgetPass implements ActionListener {
     private JFrame frame;
     private JLabel username;
-    private JTextField userField;
-    private JButton next;
+    private UIStyle.ModernTextField userField;
+    private UIStyle.ModernButton next;
     private JButton exitButton;
-    private JButton backButton;
+    private UIStyle.ModernButton backButton;
     private Container c;
-    private ImageIcon forgotUser;
     private Cursor cursor;
     protected static boolean loginFlag;
     protected static int deleteLine;
@@ -27,82 +26,84 @@ public class ForgetPass implements ActionListener {
     public ForgetPass() {
         frame = new JFrame();
         frame.setBounds(50, 50, 850, 550);
-        frame.setTitle("Reset Password");
+        frame.setTitle("Grocery Shop Management - Password Recovery (Step 1)");
         frame.setLayout(null);
         frame.setVisible(true);
         c = frame.getContentPane();
-        c.setBackground(Color.decode("#24292e"));
+        c.setBackground(UIStyle.BG_DARK);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         ImageIcon icon = new ImageIcon("images/market.jpg");
         frame.setIconImage(icon.getImage());
-        frame.setLocationRelativeTo(null);
 
         cursor = new Cursor(Cursor.HAND_CURSOR);
 
-        forgotUser = new ImageIcon("images/forgot_user.png");
-        JLabel imgLabel = new JLabel(forgotUser);
-        imgLabel.setBounds(0, 100, forgotUser.getIconWidth(), forgotUser.getIconHeight());
-        frame.add(imgLabel);
+        // --- WIZARD CARD ---
+        UIStyle.RoundedPanel card = new UIStyle.RoundedPanel(16, UIStyle.PANEL_BG, UIStyle.PANEL_BORDER);
+        card.setBounds(180, 40, 490, 430);
+        card.setLayout(null);
+        frame.add(card);
 
-        JLabel forget = new JLabel("Reset Password");
-        forget.setBounds(375, 0, 200, 50);
-        Font forgetFont = new Font("Times New Roman", Font.PLAIN, 22);
-        forget.setFont(forgetFont);
-        forget.setForeground(Color.white);
-        frame.add(forget);
+        JLabel stepBadge = new JLabel("STEP 1 OF 3", SwingConstants.CENTER);
+        stepBadge.setBounds(190, 25, 110, 22);
+        stepBadge.setOpaque(true);
+        stepBadge.setBackground(UIStyle.COLOR_PRIMARY);
+        stepBadge.setForeground(UIStyle.TEXT_PRIMARY);
+        stepBadge.setFont(UIStyle.FONT_SMALL);
+        card.add(stepBadge);
 
-        username = new JLabel("User Name :");
-        username.setBounds(385, 230, 180, 50);
-        Font usernameFont = new Font("Verdana", Font.PLAIN, 18);
-        username.setVisible(true);
-        username.setFont(usernameFont);
-        username.setForeground(Color.white);
-        frame.add(username);
+        JLabel title = new JLabel("Reset Your Password", SwingConstants.CENTER);
+        title.setBounds(30, 55, 430, 30);
+        title.setFont(UIStyle.FONT_TITLE);
+        title.setForeground(UIStyle.TEXT_PRIMARY);
+        card.add(title);
 
-        userField = new JTextField();
-        userField.setBounds(510, 242, 180, 30);
-        Font userfieldFont = new Font("Times New Roman", Font.BOLD, 18);
-        userField.setFont(userfieldFont);
-        userField.setVisible(true);
-        userField.setOpaque(false);
-        userField.setForeground(new Color(219, 226, 233));
-        userField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder = BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(179, 63, 64));
-        userField.setBorder(redBorder);
-        frame.add(userField);
+        JLabel sub = new JLabel("Enter your registered username to verify your account", SwingConstants.CENTER);
+        sub.setBounds(30, 88, 430, 20);
+        sub.setFont(UIStyle.FONT_SMALL);
+        sub.setForeground(UIStyle.TEXT_MUTED);
+        card.add(sub);
 
-        ImageIcon fnext = new ImageIcon("images/fnext.png");
-        next = new JButton(fnext);
-        next.setBounds(652, 278, 45, 45);
-        next.setBackground(new Color(0, 0, 0, 0));
-        next.setOpaque(false);
-        next.setBorder(BorderFactory.createEmptyBorder());
-        next.setCursor(cursor);
-        next.setVisible(true);
-        frame.add(next);
+        // Graphic logo
+        ImageIcon forgotUser = new ImageIcon("images/forgot_user.png");
+        Image img = forgotUser.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        JLabel imgLabel = new JLabel(new ImageIcon(img));
+        imgLabel.setBounds(195, 120, 100, 100);
+        card.add(imgLabel);
 
-        ImageIcon exit = new ImageIcon("images/Exit.png");
-        exitButton = new JButton(exit);
-        exitButton.setBounds(802, 478, exit.getIconWidth(), exit.getIconHeight());
-        exitButton.setBackground(Color.black);
+        username = new JLabel("Username");
+        username.setBounds(70, 235, 200, 20);
+        username.setFont(UIStyle.FONT_BODY_BOLD);
+        username.setForeground(UIStyle.TEXT_PRIMARY);
+        card.add(username);
+
+        userField = new UIStyle.ModernTextField("Enter your username");
+        userField.setBounds(70, 260, 350, 38);
+        card.add(userField);
+
+        next = new UIStyle.ModernButton("Next Step →", UIStyle.COLOR_PRIMARY, UIStyle.COLOR_PRIMARY_HOVER);
+        next.setBounds(70, 320, 350, 42);
+        card.add(next);
+
+        backButton = new UIStyle.ModernButton("← Back to Login", UIStyle.COLOR_SECONDARY, UIStyle.COLOR_SECONDARY_HOVER);
+        backButton.setBounds(70, 372, 350, 36);
+        card.add(backButton);
+
+        // Exit Button (Top Right corner)
+        exitButton = new JButton("✕");
+        exitButton.setBounds(795, 10, 30, 30);
+        exitButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        exitButton.setForeground(UIStyle.TEXT_MUTED);
         exitButton.setOpaque(false);
+        exitButton.setContentAreaFilled(false);
         exitButton.setBorder(BorderFactory.createEmptyBorder());
+        exitButton.setCursor(cursor);
         frame.add(exitButton);
-
-        ImageIcon backimg = new ImageIcon("images/previous.png");
-        backButton = new JButton(backimg);
-        backButton.setBounds(0, 479, backimg.getIconWidth(), backimg.getIconHeight());
-        backButton.setBackground(Color.black);
-        backButton.setOpaque(false);
-        backButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(backButton);
 
         next.addActionListener(this);
         backButton.addActionListener(this);
         exitButton.addActionListener(this);
-
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -117,49 +118,40 @@ public class ForgetPass implements ActionListener {
                 File userfile = new File(".\\files\\user_login.txt");
                 if (userfile.exists()) {
                     BufferedReader readFile = new BufferedReader(new FileReader(".\\files\\user_login.txt"));
-
                     while (readFile.readLine() != null) {
                         totalLines++;
                     }
                     readFile.close();
                 }
 
-                if (userEmpty == true) {
-                    showMessageDialog(null, "Enter User Name", "Error", JOptionPane.WARNING_MESSAGE);
+                if (userEmpty) {
+                    showMessageDialog(null, "Please enter your username.", "Warning", JOptionPane.WARNING_MESSAGE);
                     yes = false;
                 } else {
-
                     for (int i = 0; i < totalLines; i++) {
-
                         String line = Files.readAllLines(Paths.get(".\\files\\user_login.txt")).get(i);
                         if (line.equals(user)) {
                             deleteLine = i;
                             yes = true;
                             break;
-
                         }
                     }
-                    if (yes == true) {
+                    if (yes) {
                         frame.setVisible(false);
                         new ForgetPass2();
                     } else {
-                        showMessageDialog(null, "Username not found", "Error", JOptionPane.WARNING_MESSAGE);
+                        showMessageDialog(null, "Username not found!", "Error", JOptionPane.ERROR_MESSAGE);
                     }
-
                 }
-
             } catch (Exception ex) {
-
-                showMessageDialog(null, "Username not found", "Error", JOptionPane.WARNING_MESSAGE);
-
+                showMessageDialog(null, "Username not found!", "Error", JOptionPane.ERROR_MESSAGE);
             }
-
         } else if (e.getSource() == exitButton) {
-            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Alart!",
+            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit Confirmation",
                     JOptionPane.YES_NO_OPTION);
 
-            if (yesORno == 0) {
-                System.exit(1);
+            if (yesORno == JOptionPane.YES_OPTION) {
+                System.exit(0);
             }
         } else if (e.getSource() == backButton) {
             frame.setVisible(false);

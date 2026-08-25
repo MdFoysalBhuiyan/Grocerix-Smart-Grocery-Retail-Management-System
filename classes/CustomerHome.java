@@ -40,33 +40,83 @@ public class CustomerHome implements ActionListener {
     private JScrollPane scroll;
     private int tablecount;
 
-    private JButton profileButton;
-    private JButton buyButton;
-    private JButton deleteButton;
-    private JButton exitButton;
-    private JButton backButton;
-    private JButton logoutButton;
+    private UIStyle.ModernButton profileButton;
+    private UIStyle.ModernButton buyButton;
+    private UIStyle.ModernButton deleteButton;
+    private UIStyle.ModernButton exitButton;
+    private UIStyle.ModernButton logoutButton;
     private String newfiles;
 
     private String usernamenew = Login.USERNAME;
 
     public CustomerHome() {
-
         frame = new JFrame();
         frame.setBounds(50, 50, 850, 550);
-        frame.setTitle("Customer Home");
+        frame.setTitle("Grocery Shop Management - Customer Workspace");
         frame.setLayout(null);
         frame.setVisible(true);
         c = frame.getContentPane();
-        c.setBackground(Color.decode("#24292e"));
+        c.setBackground(UIStyle.BG_DARK);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         ImageIcon icon = new ImageIcon("images/market.jpg");
         frame.setIconImage(icon.getImage());
-        frame.setLocationRelativeTo(null);
 
         cursor = new Cursor(Cursor.HAND_CURSOR);
+
+        // --- TOP BANNER ---
+        UIStyle.RoundedPanel topBanner = new UIStyle.RoundedPanel(12, UIStyle.PANEL_BG, UIStyle.PANEL_BORDER);
+        topBanner.setBounds(30, 20, 790, 70);
+        topBanner.setLayout(null);
+        frame.add(topBanner);
+
+        JLabel bannerTitle = new JLabel("Customer Portal");
+        bannerTitle.setBounds(20, 12, 300, 26);
+        bannerTitle.setFont(UIStyle.FONT_TITLE);
+        bannerTitle.setForeground(UIStyle.COLOR_PRIMARY);
+        topBanner.add(bannerTitle);
+
+        JLabel userBadge = new JLabel("Welcome, " + (usernamenew != null ? usernamenew : "User"));
+        userBadge.setBounds(20, 40, 300, 18);
+        userBadge.setFont(UIStyle.FONT_BODY_BOLD);
+        userBadge.setForeground(UIStyle.TEXT_SECONDARY);
+        topBanner.add(userBadge);
+
+        // Header Action Buttons
+        buyButton = new UIStyle.ModernButton("🏬 Browse & Rent", UIStyle.COLOR_SUCCESS, UIStyle.COLOR_SUCCESS_HOVER);
+        buyButton.setBounds(340, 16, 140, 38);
+        topBanner.add(buyButton);
+        buyButton.addActionListener(this);
+
+        profileButton = new UIStyle.ModernButton("👤 Profile", UIStyle.COLOR_PRIMARY, UIStyle.COLOR_PRIMARY_HOVER);
+        profileButton.setBounds(490, 16, 120, 38);
+        topBanner.add(profileButton);
+        profileButton.addActionListener(this);
+
+        logoutButton = new UIStyle.ModernButton("🚪 Log Out", UIStyle.COLOR_DANGER, UIStyle.COLOR_DANGER_HOVER);
+        logoutButton.setBounds(620, 16, 120, 38);
+        topBanner.add(logoutButton);
+        logoutButton.addActionListener(this);
+
+        // Exit Button (Top Right corner)
+        exitButton = new UIStyle.ModernButton("✕", UIStyle.PANEL_BG, UIStyle.COLOR_DANGER);
+        exitButton.setBounds(750, 16, 30, 38);
+        exitButton.setMargin(new Insets(0,0,0,0));
+        topBanner.add(exitButton);
+        exitButton.addActionListener(this);
+
+        // --- MAIN DATA PANEL ---
+        JLabel details = new JLabel("Your Rented Shops Overview");
+        details.setBounds(30, 105, 350, 30);
+        details.setFont(UIStyle.FONT_HEADER);
+        details.setForeground(UIStyle.TEXT_PRIMARY);
+        frame.add(details);
+
+        deleteButton = new UIStyle.ModernButton("↩ Return Selected Shop", UIStyle.COLOR_SECONDARY, UIStyle.COLOR_SECONDARY_HOVER);
+        deleteButton.setBounds(600, 105, 220, 34);
+        frame.add(deleteButton);
+        deleteButton.addActionListener(this);
 
         try {
             newfiles = ".\\files\\" + usernamenew + "_shops.txt";
@@ -74,7 +124,6 @@ public class CustomerHome implements ActionListener {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            Scanner input = new Scanner(file);
 
             BufferedReader readFile1 = new BufferedReader(new FileReader(newfiles));
             int totalLines1 = 0;
@@ -82,7 +131,6 @@ public class CustomerHome implements ActionListener {
             while (readFile1.readLine() != null) {
                 count2++;
             }
-
             readFile1.close();
 
             for (int j = 0; j < count2; j++) {
@@ -93,28 +141,18 @@ public class CustomerHome implements ActionListener {
             }
             tablecount = totalLines1;
 
-            String titleCol[] = { "Type", "Size(square feet)", "Shop Number", "Rent(TK)", "Place" };
+            String titleCol[] = { "Type", "Size (sq ft)", "Shop No", "Rent (TK)", "Place" };
             String titleRow[][] = new String[totalLines1][5];
 
             typearr = new String[totalLines1];
-
             sizearr = new String[totalLines1];
             rentarr = new String[totalLines1];
-
             quantityarr = new String[totalLines1];
-
             shoparr = new String[totalLines1];
-
             imglinkarr = new String[totalLines1];
 
-            String[] combolist = new String[totalLines1 + 1];
-            combolist[0] = "Choose here";
             int i = 0;
-            int k = 1;
-
             BufferedReader readFile3 = new BufferedReader(new FileReader(newfiles));
-
-            // for admin
             int totalLines3 = 0;
             while (readFile3.readLine() != null) {
                 totalLines3++;
@@ -122,7 +160,6 @@ public class CustomerHome implements ActionListener {
             readFile3.close();
 
             for (int l = 0; l < totalLines3; l++) {
-
                 String line = Files.readAllLines(Paths.get(newfiles)).get(l);
                 if (line.equals("Shop Details")) {
                     String line2 = Files.readAllLines(Paths.get(newfiles)).get((l + 1));
@@ -135,8 +172,6 @@ public class CustomerHome implements ActionListener {
                     type = line2;
                     titleRow[i][j] = type;
                     typearr[i] = type;
-                    combolist[k] = type;
-                    k++;
                     ++j;
 
                     size = line3;
@@ -167,88 +202,21 @@ public class CustomerHome implements ActionListener {
             }
 
             table = new JTable(titleRow, titleCol);
-            Font tableFont = new Font("Times New Roman", Font.PLAIN, 15);
-            table.setBackground(Color.decode("#ede4d9"));
-            table.setForeground(Color.decode("#24292e"));
-            table.setFont(tableFont);
+            UIStyle.styleTable(table);
 
             scroll = new JScrollPane(table);
-            scroll.setBounds(0, 100, 835, 180);
+            UIStyle.styleScrollPane(scroll);
+            scroll.setBounds(30, 150, 790, 330);
             frame.add(scroll);
         } catch (Exception e) {
             System.out.println(e);
         }
-
-        JLabel details = new JLabel("Your rented shops");
-        details.setBounds(340, 50, 250, 60);
-        Font detailsFont = new Font("Times New Roman", Font.PLAIN, 22);
-        details.setFont(detailsFont);
-        details.setForeground(new Color(215, 210, 203));
-        frame.add(details);
-
-        buyButton = new JButton("Rent Shop");
-        buyButton.setBounds(280, 290, 80, 30);
-        buyButton.setBackground(new Color(0, 0, 0, 0));
-        buyButton.setBorder(BorderFactory.createEmptyBorder());
-        buyButton.setForeground(Color.decode("#6577b3"));
-        buyButton.setOpaque(false);
-        Font buyButtonFont = new Font("Times New Roman", Font.BOLD, 17);
-        buyButton.setFont(buyButtonFont);
-        buyButton.setCursor(cursor);
-        frame.add(buyButton);
-
-        deleteButton = new JButton("Return Shop");
-        deleteButton.setBounds(380, 290, 100, 30);
-        deleteButton.setBackground(new Color(0, 0, 0, 0));
-        deleteButton.setBorder(BorderFactory.createEmptyBorder());
-        deleteButton.setForeground(Color.decode("#6577b3"));
-        deleteButton.setOpaque(false);
-        Font deleteButtonFont = new Font("Times New Roman", Font.BOLD, 17);
-        deleteButton.setFont(deleteButtonFont);
-        deleteButton.setCursor(cursor);
-        frame.add(deleteButton);
-
-        profileButton = new JButton(usernamenew);
-        profileButton.setBounds(490, 290, 100, 30);
-        profileButton.setBackground(new Color(0, 0, 0, 0));
-        profileButton.setBorder(BorderFactory.createEmptyBorder());
-        profileButton.setOpaque(false);
-        profileButton.setForeground(Color.decode("#6577b3"));
-        Font profileButtonFont = new Font("Times New Roman", Font.BOLD, 17);
-        profileButton.setFont(profileButtonFont);
-        profileButton.setCursor(cursor);
-        frame.add(profileButton);
-
-        ImageIcon exit = new ImageIcon("images/Exit.png");
-        exitButton = new JButton(exit);
-        exitButton.setBounds(802, 478, exit.getIconWidth(), exit.getIconHeight());
-        exitButton.setBackground(Color.black);
-        exitButton.setOpaque(false);
-        exitButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(exitButton);
-
-        ImageIcon logout = new ImageIcon("images/logout.png");
-        logoutButton = new JButton(logout);
-        logoutButton.setBounds(807, 2, logout.getIconWidth(), logout.getIconHeight());
-        logoutButton.setBackground(Color.black);
-        logoutButton.setOpaque(false);
-        logoutButton.setVisible(true);
-        logoutButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(logoutButton);
-
-        deleteButton.addActionListener(this);
-        buyButton.addActionListener(this);
-        profileButton.addActionListener(this);
-        exitButton.addActionListener(this);
-        logoutButton.addActionListener(this);
-
     }
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == deleteButton) {
-
-            if (table.getSelectionModel().isSelectionEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please select a shop to return", "Warning!",
+            if (table == null || table.getSelectionModel().isSelectionEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please select a shop from the list to return.", "Warning",
                         JOptionPane.WARNING_MESSAGE);
             } else {
                 try {
@@ -258,6 +226,8 @@ public class CustomerHome implements ActionListener {
                     while (readFile1.readLine() != null) {
                         count2++;
                     }
+                    readFile1.close();
+
                     for (int j = 0; j < count2; j++) {
                         String line = Files.readAllLines(Paths.get(newfiles)).get(j);
                         if (line.equals("Shop Details")) {
@@ -266,17 +236,15 @@ public class CustomerHome implements ActionListener {
                     }
                     tablecount = totalLines1;
                     String removeUser = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
-                    System.out.println(removeUser);
 
-                    for (int i = 0; i < shopcount; i++) {
-                        if (typearr[i].equals(removeUser)) {
+                    for (int i = 0; i < typearr.length; i++) {
+                        if (typearr[i] != null && typearr[i].equals(removeUser)) {
                             count2 = i;
                             break;
                         }
                     }
 
                     userList = removeUser;
-                    String targetshop;
                     for (int j = 0; j < count2; j++) {
                         String line = Files.readAllLines(Paths.get(newfiles)).get(j);
                         if (line.equals(removeUser)) {
@@ -288,7 +256,6 @@ public class CustomerHome implements ActionListener {
                     File oldFile = new File(newfiles);
                     File newFile = new File(".\\files\\temp.txt.txt");
                     int l = 0;
-
                     String currentline;
                     File rentShop = new File(".\\files\\all_shops.txt");
 
@@ -326,7 +293,6 @@ public class CustomerHome implements ActionListener {
                         } else {
                             printWriter3.println(currentline);
                         }
-
                     }
 
                     printWriter2.flush();
@@ -352,11 +318,11 @@ public class CustomerHome implements ActionListener {
                 }
             }
         } else if (e.getSource() == exitButton) {
-            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Alart!",
+            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit Confirmation",
                     JOptionPane.YES_NO_OPTION);
 
-            if (yesORno == 0) {
-                System.exit(1);
+            if (yesORno == JOptionPane.YES_OPTION) {
+                System.exit(0);
             }
         } else if (e.getSource() == logoutButton) {
             frame.setVisible(false);

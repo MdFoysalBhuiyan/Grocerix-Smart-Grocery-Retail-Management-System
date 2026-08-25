@@ -14,115 +14,108 @@ import classes.*;
 public class ForgetPass2 implements ActionListener {
     private JFrame frame;
     private JLabel phone;
-    private JTextField phoneField;
+    private UIStyle.ModernTextField phoneField;
     private JLabel hintphn;
-    private JButton next2;
+    private UIStyle.ModernButton next2;
     private JButton exitButton;
-    private JButton backButton;
+    private UIStyle.ModernButton backButton;
     private Container c;
-    private ImageIcon forgotUser;
     private Cursor cursor;
     protected static boolean loginFlag;
-
-    int totalLines;
 
     public ForgetPass2() {
         frame = new JFrame();
         frame.setBounds(50, 50, 850, 550);
-        frame.setTitle("Reset Password");
+        frame.setTitle("Grocery Shop Management - Password Recovery (Step 2)");
         frame.setLayout(null);
         frame.setVisible(true);
         c = frame.getContentPane();
-        c.setBackground(Color.decode("#24292e"));
+        c.setBackground(UIStyle.BG_DARK);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         ImageIcon icon = new ImageIcon("images/market.jpg");
         frame.setIconImage(icon.getImage());
-        frame.setLocationRelativeTo(null);
 
         cursor = new Cursor(Cursor.HAND_CURSOR);
 
-        JLabel forget = new JLabel("Reset Password");
-        forget.setBounds(375, 0, 200, 50);
-        Font forgetFont = new Font("Times New Roman", Font.PLAIN, 22);
-        forget.setFont(forgetFont);
-        forget.setForeground(Color.white);
-        frame.add(forget);
+        // --- WIZARD CARD ---
+        UIStyle.RoundedPanel card = new UIStyle.RoundedPanel(16, UIStyle.PANEL_BG, UIStyle.PANEL_BORDER);
+        card.setBounds(180, 40, 490, 430);
+        card.setLayout(null);
+        frame.add(card);
 
-        forgotUser = new ImageIcon("images/forgot_user2.png");
-        JLabel imgLabel = new JLabel(forgotUser);
-        imgLabel.setBounds(0, 115, forgotUser.getIconWidth(), forgotUser.getIconHeight());
-        frame.add(imgLabel);
+        JLabel stepBadge = new JLabel("STEP 2 OF 3", SwingConstants.CENTER);
+        stepBadge.setBounds(190, 25, 110, 22);
+        stepBadge.setOpaque(true);
+        stepBadge.setBackground(UIStyle.COLOR_PRIMARY);
+        stepBadge.setForeground(UIStyle.TEXT_PRIMARY);
+        stepBadge.setFont(UIStyle.FONT_SMALL);
+        card.add(stepBadge);
 
-        phone = new JLabel("Phone No :");
-        phone.setBounds(385, 230, 180, 50);
-        Font phoneFont = new Font("Verdana", Font.PLAIN, 18);
-        phone.setFont(phoneFont);
-        phone.setForeground(Color.white);
-        phone.setVisible(true);
-        frame.add(phone);
+        JLabel title = new JLabel("Verify Phone Number", SwingConstants.CENTER);
+        title.setBounds(30, 55, 430, 30);
+        title.setFont(UIStyle.FONT_TITLE);
+        title.setForeground(UIStyle.TEXT_PRIMARY);
+        card.add(title);
 
-        phoneField = new JTextField();
-        phoneField.setBounds(510, 242, 180, 30);
-        Font phoneFieldFont = new Font("Times New Roman", Font.BOLD, 18);
-        phoneField.setFont(phoneFieldFont);
-        phoneField.setOpaque(false);
-        phoneField.setForeground(new Color(219, 226, 233));
-        phoneField.setBorder(BorderFactory.createEmptyBorder());
-        Border redBorder1 = BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(179, 63, 64));
-        phoneField.setBorder(redBorder1);
-        phoneField.setVisible(true);
-        frame.add(phoneField);
+        JLabel sub = new JLabel("Enter your registered phone number for verification", SwingConstants.CENTER);
+        sub.setBounds(30, 88, 430, 20);
+        sub.setFont(UIStyle.FONT_SMALL);
+        sub.setForeground(UIStyle.TEXT_MUTED);
+        card.add(sub);
 
-        ImageIcon fnext = new ImageIcon("images/fnext.png");
-        next2 = new JButton(fnext);
-        next2.setBounds(652, 278, 45, 45);
-        next2.setBackground(new Color(0, 0, 0, 0));
-        next2.setOpaque(false);
-        next2.setBorder(BorderFactory.createEmptyBorder());
-        next2.setCursor(cursor);
-        next2.setVisible(true);
-        frame.add(next2);
+        // Graphic logo
+        ImageIcon forgotUser = new ImageIcon("images/forgot_user2.png");
+        Image img = forgotUser.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        JLabel imgLabel = new JLabel(new ImageIcon(img));
+        imgLabel.setBounds(195, 115, 100, 100);
+        card.add(imgLabel);
 
-        ImageIcon exit = new ImageIcon("images/Exit.png");
-        exitButton = new JButton(exit);
-        exitButton.setBounds(802, 478, exit.getIconWidth(), exit.getIconHeight());
-        exitButton.setBackground(Color.black);
-        exitButton.setOpaque(false);
-        exitButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(exitButton);
-
-        ImageIcon backimg = new ImageIcon("images/previous.png");
-        backButton = new JButton(backimg);
-        backButton.setBounds(0, 479, backimg.getIconWidth(), backimg.getIconHeight());
-        backButton.setBackground(Color.black);
-        backButton.setOpaque(false);
-        backButton.setBorder(BorderFactory.createEmptyBorder());
-        frame.add(backButton);
-
+        // Phone Hint
+        String line2 = "";
         try {
-            File userfile = new File(".\\files\\user_login.txt");
             int k = ((ForgetPass.deleteLine) + 2);
             String line1 = Files.readAllLines(Paths.get(".\\files\\user_login.txt")).get(k);
-            String line2 = "";
-            // for (int j = 16; j < line1.length(); j++) {
-            line2 = line2 + line1.charAt(16);
-            line2 = line2 + line1.charAt(17);
-            line2 = line2 + line1.charAt(18);
-            // }
-
-            hintphn = new JLabel("Hint :xxxxxxxx" + line2);
-            hintphn.setBounds(528, 210, 180, 30);
-            hintphn.setForeground(new Color(245, 242, 208, 150));
-            Font hintphnFont = new Font("Verdana", Font.BOLD, 14);
-            hintphn.setFont(hintphnFont);
-            hintphn.setVisible(true);
-            frame.add(hintphn);
-
+            line2 = line2 + line1.charAt(16) + line1.charAt(17) + line1.charAt(18);
         } catch (Exception e) {
-            System.out.println(e);
+            line2 = "***";
         }
+
+        hintphn = new JLabel("Phone Hint: xxxxxxxx" + line2, SwingConstants.CENTER);
+        hintphn.setBounds(30, 222, 430, 20);
+        hintphn.setForeground(UIStyle.COLOR_WARNING);
+        hintphn.setFont(UIStyle.FONT_BODY_BOLD);
+        card.add(hintphn);
+
+        phone = new JLabel("Phone Number");
+        phone.setBounds(70, 245, 200, 20);
+        phone.setFont(UIStyle.FONT_BODY_BOLD);
+        phone.setForeground(UIStyle.TEXT_PRIMARY);
+        card.add(phone);
+
+        phoneField = new UIStyle.ModernTextField("Enter full phone number");
+        phoneField.setBounds(70, 268, 350, 38);
+        card.add(phoneField);
+
+        next2 = new UIStyle.ModernButton("Verify & Continue →", UIStyle.COLOR_PRIMARY, UIStyle.COLOR_PRIMARY_HOVER);
+        next2.setBounds(70, 320, 350, 42);
+        card.add(next2);
+
+        backButton = new UIStyle.ModernButton("← Back to Step 1", UIStyle.COLOR_SECONDARY, UIStyle.COLOR_SECONDARY_HOVER);
+        backButton.setBounds(70, 372, 350, 36);
+        card.add(backButton);
+
+        // Exit Button (Top Right corner)
+        exitButton = new JButton("✕");
+        exitButton.setBounds(795, 10, 30, 30);
+        exitButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        exitButton.setForeground(UIStyle.TEXT_MUTED);
+        exitButton.setOpaque(false);
+        exitButton.setContentAreaFilled(false);
+        exitButton.setBorder(BorderFactory.createEmptyBorder());
+        exitButton.setCursor(cursor);
+        frame.add(exitButton);
 
         next2.addActionListener(this);
         backButton.addActionListener(this);
@@ -130,53 +123,40 @@ public class ForgetPass2 implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-
         String user = "Phone : " + phoneField.getText();
         String user1 = phoneField.getText();
         boolean userEmpty = user1.isEmpty();
         boolean yes = false;
-        boolean yes2 = false;
+
         if (e.getSource() == next2) {
-
             try {
-                File userfile = new File(".\\files\\user_login.txt");
-
-                if (userEmpty == true) {
-
-                    showMessageDialog(null, "Enter phone number", "Error", JOptionPane.WARNING_MESSAGE);
-
-                } else if (userEmpty == false) {
-
+                if (userEmpty) {
+                    showMessageDialog(null, "Please enter your phone number.", "Warning", JOptionPane.WARNING_MESSAGE);
+                } else {
                     int n = ((ForgetPass.deleteLine) + 2);
                     BufferedReader readFile = new BufferedReader(new FileReader(".\\files\\user_login.txt"));
                     String line = Files.readAllLines(Paths.get(".\\files\\user_login.txt")).get(n);
                     if (line.equals(user)) {
                         yes = true;
-
-                    } else {
-                        yes = false;
                     }
+                    readFile.close();
 
-                    if (yes == false) {
-                        showMessageDialog(null, "Phone number not found!", "Error", JOptionPane.WARNING_MESSAGE);
+                    if (!yes) {
+                        showMessageDialog(null, "Phone number does not match record!", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
                         frame.setVisible(false);
                         new ForgetPass3();
                     }
-                    readFile.close();
-
                 }
-
             } catch (Exception ex) {
-                showMessageDialog(null, "Phone number not found!", "Error", JOptionPane.WARNING_MESSAGE);
-
+                showMessageDialog(null, "Phone number verification failed!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else if (e.getSource() == exitButton) {
-            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure ?", "Alart!",
+            int yesORno = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Exit Confirmation",
                     JOptionPane.YES_NO_OPTION);
 
-            if (yesORno == 0) {
-                System.exit(1);
+            if (yesORno == JOptionPane.YES_OPTION) {
+                System.exit(0);
             }
         } else if (e.getSource() == backButton) {
             frame.setVisible(false);
