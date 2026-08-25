@@ -1,0 +1,51 @@
+
+
+
+
+
+Shop Details
+Beauty Parlour
+950X650
+B105
+11000
+Shantinagar
+images/parlour.png
+
+
+
+
+shahriar
+
+shahriar
+
+shahriar
+
+Shop Details
+Book
+800*600
+23
+12000
+Khilkhet
+images/book.png
+sabbir
+
+Shop Details
+MiniMart
+1200X700
+B003
+17000
+Badda
+images/minimart.png
+sabbir
+
+
+Shop Details
+Beauty Parlour
+950X650
+B105
+11000
+Shantinagar
+images/parlour.png
+sabbir
+
+

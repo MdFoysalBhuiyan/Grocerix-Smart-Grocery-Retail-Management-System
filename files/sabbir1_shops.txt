@@ -1,0 +1,8 @@
+Shop Details
+Theater
+1800X1600
+D098
+52000
+Kuril
+images/theater.png
+
